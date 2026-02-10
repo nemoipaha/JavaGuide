@@ -197,7 +197,7 @@ iframe 流非常不友好，强烈不推荐。
 
 SSE 基于 HTTP 协议的，我们知道一般意义上的 HTTP 协议是无法做到服务端主动向客户端推送消息的，但 SSE 是个例外，它变换了一种思路。
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192390.png)
+![SSE 图解](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192390.png)
 
 SSE 在服务器和客户端之间打开一个单向通道，服务端响应的不再是一次性的数据包而是`text/event-stream`类型的数据流信息，在有数据变更时从服务器流式传输到客户端。
 
@@ -215,7 +215,7 @@ SSE 与 WebSocket 作用相似，都可以建立服务端与浏览器之间的�
 
 **SSE 与 WebSocket 该如何选择？**
 
-> 技术并没有好坏之分，只有哪个更合适
+> 技术并没有好坏之分，只有哪个更合适。
 
 SSE 好像一直不被大家所熟知，一部分原因是出现了 WebSocket，这个提供了更丰富的协议来执行双向、全双工通信。对于游戏、即时通信以及需要双向近乎实时更新的场景，拥有双向通道更具吸引力。
 

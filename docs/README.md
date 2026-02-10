@@ -47,7 +47,7 @@ footer: |-
 - **数据库系列**：[MySQL 常见面试题总结](https://javaguide.cn/database/mysql/mysql-questions-01.html)、[Redis 常见面试题总结](https://javaguide.cn/database/redis/redis-questions-01.html)
 - **分布式系列**：[分布式 ID 介绍 & 实现方案总结](https://javaguide.cn/distributed-system/distributed-id.html)、[分布式锁常见实现方案总结](https://javaguide.cn/distributed-system/distributed-lock-implementations.html)
 
-## 🚀 PDF 后端面试资料 & 面试群
+## 🚀 PDF 版本 & 面试交流群
 
 - 如果你更喜欢 **PDF**（比如通勤/离线阅读/打印学习），扫描下方二维码，后台回复“**PDF**”即可获取最新版（持续更新，详细介绍见：**[2026 最新后端面试 PDF 资料](./interview-preparation/pdf-interview-javaguide.md)**）。
 - 如果你需要加入后端面试交流群，扫描下方二维码，后台回复“**微信**”即可加群。

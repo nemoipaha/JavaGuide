@@ -15,6 +15,7 @@
   },
   "scripts": {
     "docs:build": "vuepress build docs",
+    "docs:build:clean": "rm -rf docs/.vuepress/.temp docs/.vuepress/.cache && pnpm docs:build",
     "docs:dev": "vuepress dev docs",
     "docs:clean-dev": "vuepress dev docs --clean-cache",
     "lint": "pnpm lint:prettier && pnpm lint:md",
