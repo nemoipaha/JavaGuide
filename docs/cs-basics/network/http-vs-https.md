@@ -38,7 +38,7 @@ HTTP 是应用层协议，它以 TCP（传输层）作为底层协议，默认�
 
 HTTPS 协议（Hyper Text Transfer Protocol Secure），是 HTTP 的加强安全版本。HTTPS 是基于 HTTP 的，也是用 TCP 作为底层协议，并额外使用 SSL/TLS 协议用作加密和安全认证。默认端口号是 443.
 
-HTTPS 协议中，SSL 通道通常使用基于密钥的加密算法，密钥长度通常是 40 比特或 128 比特。
+HTTPS 中，TLS 握手完成后，通信数据使用对称加密算法（如 AES-128-GCM 或 AES-256-GCM）保护，密钥通过非对称加密（如 RSA-2048/4096 或 ECDH）在握手阶段协商生成。早期 SSL 使用的 40 比特密钥因强度不足已被废弃，现代 TLS 要求对称密钥至少 128 比特。
 
 ### HTTPS 协议优点
 
@@ -52,7 +52,7 @@ HTTPS 之所以能达到较高的安全性要求，就是结合了 SSL/TLS 和 T
 
 **SSL 和 TLS 没有太大的区别。**
 
-SSL 指安全套接字协议（Secure Sockets Layer），首次发布与 1996 年。SSL 的首次发布其实已经是他的 3.0 版本，SSL 1.0 从未面世，SSL 2.0 则具有较大的缺陷（DROWN 缺陷——Decrypting RSA with Obsolete and Weakened eNcryption）。很快，在 1999 年，SSL 3.0 进一步升级，**新版本被命名为 TLS 1.0**。因此，TLS 是基于 SSL 之上的，但由于习惯叫法，通常把 HTTPS 中的核心加密协议混称为 SSL/TLS。
+SSL 指安全套接字协议（Secure Sockets Layer），首次发布于 1996 年（SSL 3.0）。SSL 1.0 从未面世，SSL 2.0 则具有较大的缺陷（DROWN 缺陷——Decrypting RSA with Obsolete and Weakened eNcryption）。很快，在 1999 年，SSL 3.0 进一步升级，**新版本被命名为 TLS 1.0**。因此，TLS 是基于 SSL 之上的，但由于习惯叫法，通常把 HTTPS 中的核心加密协议混称为 SSL/TLS。目前 SSL 已完全废弃，TLS 1.2 和 TLS 1.3 是现代 HTTPS 的实际标准。
 
 ### SSL/TLS 的工作原理
 

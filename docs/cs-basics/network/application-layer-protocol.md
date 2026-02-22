@@ -138,7 +138,7 @@ RTP 协议分为两种子协议：
 
 ## DNS:域名系统
 
-DNS（Domain Name System，域名管理系统）基于 UDP 协议，用于解决域名和 IP 地址的映射问题。
+DNS（Domain Name System，域名管理系统）通常基于 UDP 协议（端口 53），用于解决域名和 IP 地址的映射问题。当响应数据超过 UDP 长度限制或进行区域传送时会改用 TCP。
 
 ![DNS:域名系统](https://oss.javaguide.cn/github/javaguide/cs-basics/network/dns-overview.png)
 
