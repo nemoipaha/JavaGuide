@@ -1,10 +1,18 @@
 import { defineClientConfig } from "vuepress/client";
 import { h } from "vue";
 import LayoutToggle from "./components/LayoutToggle.vue";
+import UnlockContent from "./components/unlock/UnlockContent.vue";
+import GlobalUnlock from "./components/unlock/GlobalUnlock.vue";
 
 export default defineClientConfig({
+  enhance({ app }) {
+    // 注册手动解锁组件
+    app.component("UnlockContent", UnlockContent);
+  },
   rootComponents: [
-    // 将切换按钮添加为根组件，会在所有页面显示
+    // 全局切换按钮
     () => h(LayoutToggle),
+    // 全局扫码解锁控制器
+    () => h(GlobalUnlock),
   ],
 });
