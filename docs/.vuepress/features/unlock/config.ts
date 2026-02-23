@@ -10,7 +10,7 @@ export const unlockConfig = {
   // 版本号变更可强制用户重新验证
   unlockVersion: "v1",
   // 调试用：设为 true 时无视本地已解锁状态，始终触发限制
-  forceLock: true,
+  forceLock: false,
   code: "8888",
   // 使用相对路径，图片放在 docs/.vuepress/public/images 下
   qrCodeUrl: "/images/qrcode-javaguide.jpg",

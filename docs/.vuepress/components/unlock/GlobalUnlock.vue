@@ -1,6 +1,6 @@
 <template>
-  <div v-if="isLockedPage && !isUnlocked">
-    <Teleport v-if="teleportTarget" :to="teleportTarget">
+  <div v-if="isClientReady && isLockedPage && !isUnlocked">
+    <Teleport v-if="teleportTargetSelector" :to="teleportTargetSelector">
       <div class="read-more-anchor">
         <div class="read-more-mask" />
         <button class="read-more-btn" @click="showDialog = true">
@@ -75,11 +75,12 @@ const STYLE_ID = "unlock-global-style";
 const DATA_ATTR = "data-unlock-target";
 
 const pageData = usePageData();
+const isClientReady = ref(false);
 const isUnlocked = ref(false);
 const inputCode = ref("");
 const showError = ref(false);
 const showDialog = ref(false);
-const teleportTarget = ref<HTMLElement | null>(null);
+const teleportTargetSelector = ref<string | null>(null);
 const globalUnlockKey = `javaguide_site_unlocked_${config.unlockVersion ?? "v1"}`;
 
 const normalizePath = (path: string) =>
@@ -155,13 +156,13 @@ const buildLockCSS = (height: string) => `
 `;
 
 const applyLockStyle = async () => {
-  if (typeof document === "undefined") return;
+  if (typeof document === "undefined" || !isClientReady.value) return;
 
   document.querySelectorAll(`[${DATA_ATTR}]`).forEach((el) => {
     el.removeAttribute(DATA_ATTR);
   });
 
-  teleportTarget.value = null;
+  teleportTargetSelector.value = null;
   const styleEl = ensureStyleEl();
 
   if (!isLockedPage.value || isUnlocked.value) {
@@ -176,6 +177,12 @@ const applyLockStyle = async () => {
     return;
   }
 
+  // 路由切换期间节点可能已卸载，避免 hydration 阶段异常
+  if (!document.contains(contentEl)) {
+    styleEl.innerHTML = "";
+    return;
+  }
+
   // 内容不够长时不加锁、不展示按钮
   if (contentEl.scrollHeight <= toPx(visibleHeight.value)) {
     styleEl.innerHTML = "";
@@ -184,7 +191,10 @@ const applyLockStyle = async () => {
 
   contentEl.setAttribute(DATA_ATTR, "true");
   styleEl.innerHTML = buildLockCSS(visibleHeight.value);
-  teleportTarget.value = contentEl;
+  if (!contentEl.id) {
+    contentEl.id = "unlock-content-root";
+  }
+  teleportTargetSelector.value = `#${contentEl.id}`;
 };
 
 const handleUnlock = () => {
@@ -205,14 +215,20 @@ const handleUnlock = () => {
 };
 
 onMounted(() => {
+  isClientReady.value = true;
   readUnlockState();
-  applyLockStyle();
-  setTimeout(applyLockStyle, 300);
+  nextTick(() => {
+    applyLockStyle();
+    // 再补一帧，等主题异步渲染完成
+    requestAnimationFrame(() => applyLockStyle());
+    setTimeout(applyLockStyle, 300);
+  });
 });
 
 watch(
   () => pageData.value.path,
   async () => {
+    if (!isClientReady.value) return;
     readUnlockState();
     showDialog.value = false;
     await applyLockStyle();
