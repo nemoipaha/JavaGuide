@@ -85,19 +85,36 @@ const globalUnlockKey = `javaguide_site_unlocked_${config.unlockVersion ?? "v1"}
 const normalizePath = (path: string) =>
   path.replace(/\/$/, "").replace(".html", "").toLowerCase();
 
+const isPathInPrefix = (currentPath: string, prefix: string) => {
+  return currentPath === prefix || currentPath.startsWith(`${prefix}/`);
+};
+
 const isLockedPage = computed(() => {
   const currentPath = normalizePath(pageData.value.path);
-  return Object.keys(config.protectedPaths)
+  const byExactPath = Object.keys(config.protectedPaths)
     .map((p) => normalizePath(p))
     .includes(currentPath);
+  if (byExactPath) return true;
+
+  const prefixes = Object.keys(config.protectedPrefixes ?? {}).map((p) =>
+    normalizePath(p),
+  );
+  return prefixes.some((prefix) => isPathInPrefix(currentPath, prefix));
 });
 
 const visibleHeight = computed(() => {
   const currentPath = normalizePath(pageData.value.path);
-  const matched = Object.keys(config.protectedPaths).find(
+  const matchedPath = Object.keys(config.protectedPaths).find(
     (p) => normalizePath(p) === currentPath,
   );
-  return matched ? config.protectedPaths[matched] : PREVIEW_HEIGHT.LONG;
+  if (matchedPath) return config.protectedPaths[matchedPath];
+
+  const matchedPrefix = Object.keys(config.protectedPrefixes ?? {}).find(
+    (prefix) => isPathInPrefix(currentPath, normalizePath(prefix)),
+  );
+  if (matchedPrefix) return config.protectedPrefixes[matchedPrefix];
+
+  return PREVIEW_HEIGHT.LONG;
 });
 
 const toPx = (value: string) => {
