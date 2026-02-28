@@ -465,7 +465,7 @@ export default sidebar({
             "cap-and-base-theorem",
             "paxos-algorithm",
             "raft-algorithm",
-            "gossip-protocl",
+            "gossip-protocol",
             "consistent-hashing",
           ],
         },

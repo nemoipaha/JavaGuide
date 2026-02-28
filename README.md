@@ -329,7 +329,7 @@ JVM 这部分内容主要参考 [JVM 虚拟机规范-Java8](https://docs.oracle.
 - [CAP 理论和 BASE 理论解读](https://javaguide.cn/distributed-system/protocol/cap-and-base-theorem.html)
 - [Paxos 算法解读](https://javaguide.cn/distributed-system/protocol/paxos-algorithm.html)
 - [Raft 算法解读](https://javaguide.cn/distributed-system/protocol/raft-algorithm.html)
-- [Gossip 协议详解](https://javaguide.cn/distributed-system/protocol/gossip-protocl.html)
+- [Gossip 协议详解](https://javaguide.cn/distributed-system/protocol/gossip-protocol.html)
 - [一致性哈希算法详解](https://javaguide.cn/distributed-system/protocol/consistent-hashing.html)
 
 ### RPC

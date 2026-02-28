@@ -178,7 +178,7 @@ res = remoteFunc(req)
 
 ![RPC原理](https://oss.javaguide.cn/github/javaguide/distributed-system/rpc/edb050d383c644e895e505253f1c4d90~tplv-k3u1fbpfcp-zoom-in-crop-mark:3024:0:0:0.awebp.png)
 
-当然上面说的 HTTP，其实 **特指的是现在主流使用的 HTTP1.1**，`HTTP2`在前者的基础上做了很多改进，所以 **性能可能比很多 RPC 协议还要好**，甚至连`gRPC`底层都直接用的`HTTP2`。
+当然上面说的 HTTP，其实 **特指的是现在主流使用的 HTTP1.1**，`HTTP2`在前者的基础上做了很多改进，所以 **性能可能比很多 RPC 协议还要好**。而 gRPC 正是基于 HTTP/2 实现的（虽然它基于 HTTP/2 的帧格式定义了自己的协议，但传输层仍是 HTTP/2）。
 
 那么问题又来了。
 

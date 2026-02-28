@@ -8,7 +8,7 @@ category: 分布式
 
 ## 什么是 Spring Cloud Gateway？
 
-Spring Cloud Gateway 属于 Spring Cloud 生态系统中的网关，其诞生的目标是为了替代老牌网关 **Zuul**。准确点来说，应该是 Zuul 1.x。Spring Cloud Gateway 起步要比 Zuul 2.x 更早。
+Spring Cloud Gateway 属于 Spring Cloud 生态系统中的网关，其诞生的目标主要是为了替代 **Zuul 1.x**。Zuul 1.x 基于 Servlet 阻塞 I/O 架构，在高并发场景下性能有限。而 Zuul 2.x 虽然采用了 Netty 非阻塞架构，但 Spring Cloud 官方并未正式集成 Zuul 2.x。Spring Cloud Gateway 起步要比 Zuul 2.x 更早。
 
 为了提升网关的性能，Spring Cloud Gateway 基于 Spring WebFlux 。Spring WebFlux 使用 Reactor 库来实现响应式编程模型，底层基于 Netty 实现同步非阻塞的 I/O。
 

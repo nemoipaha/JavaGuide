@@ -64,6 +64,7 @@ Recommended to read through online reading platforms for better experience and f
 - [ArrayList Core Source Code + Expansion Mechanism Analysis](./docs/java/collection/arraylist-source-code.md)
 - [LinkedList Core Source Code Analysis](./docs/java/collection/linkedlist-source-code.md)
 - [HashMap Core Source Code + Underlying Data Structure Analysis](./docs/java/collection/hashmap-source-code.md)
+
 # Java Collection & Concurrency Series
 
 ## Collection
@@ -128,6 +129,7 @@ The JVM part mainly refers to the [JVM Specification - Java 8](https://docs.orac
 - [Java 18 New Features Overview](./docs/java/new-features/java18.md)
 - [Java 19 New Features Overview](./docs/java/new-features/java19.md)
 - [Java 20 New Features Overview](./docs/java/new-features/java20.md)
+
 # Overview of Java 21, 22, 23, 24, and 25 New Features
 
 ## Computer Fundamentals
@@ -169,7 +171,7 @@ The JVM part mainly refers to the [JVM Specification - Java 8](https://docs.orac
 - [Linear Data Structures: Arrays, Linked Lists, Stacks, Queues](./docs/cs-basics/data-structure/linear-data-structure.md)
 - [Graphs](./docs/cs-basics/data-structure/graph.md)
 - [Heaps](./docs/cs-basics/data-structure/heap.md)
-- [Trees](./docs/cs-basics/data-structure/tree.md): Focus on [Red-Black Trees](./docs/cs-basics/data-structure/red-black-tree.md), B-, B+, B* Trees, and LSM Trees
+- [Trees](./docs/cs-basics/data-structure/tree.md): Focus on [Red-Black Trees](./docs/cs-basics/data-structure/red-black-tree.md), B-, B+, B\* Trees, and LSM Trees
 
 Other Commonly Used Data Structures:
 
@@ -205,6 +207,7 @@ Additionally, [GeeksforGeeks](https://www.geeksforgeeks.org/fundamentals-of-algo
 ### MySQL
 
 **Knowledge Points/Interview Questions Summary:**
+
 # MySQL Common Knowledge Points & Interview Questions Summary (Must-Read :+1:)
 
 - [MySQL Common Knowledge Points & Interview Questions Summary](./docs/database/mysql/mysql-questions-01.md)
@@ -290,6 +293,7 @@ Additionally, [GeeksforGeeks](https://www.geeksforgeeks.org/fundamentals-of-algo
 #### Spring/SpringBoot (Must-Read :+1:)
 
 **Knowledge Points/Interview Questions Summary**:
+
 - [Summary of Common Spring Knowledge Points and Interview Questions](./docs/system-design/framework/spring/spring-knowledge-and-questions-summary.md)
 - [Summary of Common SpringBoot Knowledge Points and Interview Questions](./docs/system-design/framework/spring/springboot-knowledge-and-questions-summary.md)
 - [Summary of Common Spring/SpringBoot Annotations](./docs/system-design/framework/spring/spring-common-annotations.md)
@@ -338,7 +342,7 @@ Additionally, [GeeksforGeeks](https://www.geeksforgeeks.org/fundamentals-of-algo
 - [Interpretation of CAP Theory and BASE Theory](https://javaguide.cn/distributed-system/protocol/cap-and-base-theorem.html)
 - [Interpretation of Paxos Algorithm](https://javaguide.cn/distributed-system/protocol/paxos-algorithm.html)
 - [Interpretation of Raft Algorithm](https://javaguide.cn/distributed-system/protocol/raft-algorithm.html)
-- [Detailed Explanation of Gossip Protocol](https://javaguide.cn/distributed-system/protocol/gossip-protocl.html)
+- [Detailed Explanation of Gossip Protocol](https://javaguide.cn/distributed-system/protocol/gossip-protocol.html)
 - [Detailed Explanation of Consistent Hashing Algorithm](https://javaguide.cn/distributed-system/protocol/consistent-hashing.html)
 
 ### RPC
@@ -364,6 +368,7 @@ Additionally, [GeeksforGeeks](https://www.geeksforgeeks.org/fundamentals-of-algo
 - [Design Guide for Distributed ID](https://javaguide.cn/distributed-system/distributed-id-design.html)
 
 ### Distributed Lock
+
 # Distributed Locks
 
 - [Introduction to Distributed Locks](https://javaguide.cn/distributed-system/distributed-lock.html)

@@ -13,15 +13,30 @@ tag:
 
 当今的数据中心和应用程序在高度动态的环境中运行，为了应对高度动态的环境，它们通过额外的服务器进行横向扩展，并且根据需求进行扩展和收缩。同时，服务器和网络故障也很常见。
 
+Raft 算法由 Diego Ongaro 和 John Ousterhout 于 2014 年在 Usenix ATC 会议论文《In Search of an Understandable Consensus Algorithm》中提出。Raft 通过复制日志来保证副本状态机的一致性与安全性；在配套正确的客户端交互与读实现（如 ReadIndex / Lease Read、请求去重）后，可实现线性一致（linearizable）的读写语义，旨在作为 Paxos 的更易理解替代。
+
+相比 Paxos，Raft 通过分解为相对独立的子问题降低复杂度：
+
+- **Leader 选举**：使用随机化选举超时（工程上常见如 150–300ms 或更大范围，具体取决于网络与故障模型）。
+- **日志复制**：Leader 通过 AppendEntries RPC 广播日志。
+- **安全性**：包括选举限制和日志匹配。
+
+Raft 在实际生产中得到了广泛应用，基于 Raft 的实现如 etcd、Consul 等已成为分布式系统的重要组成部分。后续学术界和工业界也对 Raft 进行了多项扩展和优化，包括：
+
+- **Pre-Vote**（2014）：防止网络分区的节点干扰稳定集群的选举
+- **Read Index**（2014）：在 Leader 任期内通过线性一致性读优化读性能
+- **Lease Read**：基于租约的线性一致性读方案
+- **Joint Consensus**：用于集群成员变更的联合一致机制（通过引入过渡配置，典型过程为旧配置 → 联合配置 → 新配置）
+
 因此，系统必须在正常操作期间处理服务器的上下线。它们必须对变故做出反应并在几秒钟内自动适应；对客户来说的话，明显的中断通常是不可接受的。
 
 幸运的是，分布式共识可以帮助应对这些挑战。
 
-### 1.1 拜占庭将军
+### 1.1 非拜占庭条件下的"选主"类比
 
-在介绍共识算法之前，先介绍一个简化版拜占庭将军的例子来帮助理解共识算法。
+Raft 工作在非拜占庭（Crash Fault Tolerance, CFT）假设下：节点可能宕机、重启、网络延迟或分区，但不会恶意伪造/篡改消息。下面用"多方通过投票选出指挥者"的类比，仅用于帮助理解 Leader 选举与重试机制，不涉及拜占庭容错（BFT）。
 
-> 假设多位拜占庭将军中没有叛军，信使的信息可靠但有可能被暗杀的情况下，将军们如何达成是否要进攻的一致性决定？
+> 假设多位将军需要选出一位指挥官，信使的信息可靠但有可能被暗杀（网络故障），将军们如何达成一致？
 
 解决方案大致可以理解成：先在所有的将军中选出一个大将军，用来做出所有的决定。
 
@@ -33,13 +48,11 @@ tag:
 
 共识算法允许一组节点像一个整体一样一起工作，即使其中的一些节点出现故障也能够继续工作下去，其正确性主要是源于复制状态机的性质：一组`Server`的状态机计算相同状态的副本，即使有一部分的`Server`宕机了它们仍然能够继续运行。
 
-![rsm-architecture.png](https://oss.javaguide.cn/github/javaguide/paxos-rsm-architecture.png)
-
-`图-1 复制状态机架构`
+![共识算法架构](https://oss.javaguide.cn/github/javaguide/paxos-rsm-architecture.png)
 
 一般通过使用复制日志来实现复制状态机。每个`Server`存储着一份包括命令序列的日志文件，状态机会按顺序执行这些命令。因为每个日志包含相同的命令，并且顺序也相同，所以每个状态机处理相同的命令序列。由于状态机是确定性的，所以处理相同的状态，得到相同的输出。
 
-因此共识算法的工作就是保持复制日志的一致性。服务器上的共识模块从客户端接收命令并将它们添加到日志中。它与其他服务器上的共识模块通信，以确保即使某些服务器发生故障。每个日志最终包含相同顺序的请求。一旦命令被正确地复制，它们就被称为已提交。每个服务器的状态机按照日志顺序处理已提交的命令，并将输出返回给客户端，因此，这些服务器形成了一个单一的、高度可靠的状态机。
+因此共识算法的工作就是保持复制日志的一致性。服务器上的共识模块从客户端接收命令并将它们添加到日志中。它与其他服务器上的共识模块通信，以确保即使某些服务器发生故障，系统仍能在日志顺序上达成一致；最终每个日志都包含相同顺序的请求。一旦命令被正确地复制，它们就被称为已提交。每个服务器的状态机按照日志顺序处理已提交的命令，并将输出返回给客户端，因此，这些服务器形成了一个单一的、高度可靠的状态机。
 
 适用于实际系统的共识算法通常具有以下特性：
 
@@ -61,34 +74,41 @@ tag:
 
 在正常的情况下，只有一个服务器是 Leader，剩下的服务器是 Follower。Follower 是被动的，它们不会发送任何请求，只是响应来自 Leader 和 Candidate 的请求。
 
-![](https://oss.javaguide.cn/github/javaguide/paxos-server-state.png)
-
-`图-2：服务器的状态`
+![Raft 服务器状态转换示意图](https://oss.javaguide.cn/github/javaguide/paxos-server-state.png)
 
 ### 2.2 任期
 
-![](https://oss.javaguide.cn/github/javaguide/paxos-term.png)
+![任期（term）示意图](https://oss.javaguide.cn/github/javaguide/paxos-term.png)
 
-`图-3：任期`
-
-如图 3 所示，raft 算法将时间划分为任意长度的任期（term），任期用连续的数字表示，看作当前 term 号。每一个任期的开始都是一次选举，在选举开始时，一个或多个 Candidate 会尝试成为 Leader。如果一个 Candidate 赢得了选举，它就会在该任期内担任 Leader。如果没有选出 Leader，将会开启另一个任期，并立刻开始下一次选举。raft 算法保证在给定的一个任期最少要有一个 Leader。
+Raft 算法将时间划分为任意长度的任期（term），任期用连续的数字表示，看作当前 term 号。每一个任期的开始都是一次选举，在选举开始时，一个或多个 Candidate 会尝试成为 Leader。如果一个 Candidate 赢得了选举，它就会在该任期内担任 Leader。如果没有选出 Leader（例如出现分票 split vote），该任期可能没有 Leader；随后在新的选举超时后会进入下一个任期并重新发起选举。只要多数节点可用且网络最终可达，系统通常能够在若干轮选举后选出 Leader。
 
 每个节点都会存储当前的 term 号，当服务器之间进行通信时会交换当前的 term 号；如果有服务器发现自己的 term 号比其他人小，那么他会更新到较大的 term 值。如果一个 Candidate 或者 Leader 发现自己的 term 过期了，他会立即退回成 Follower。如果一台服务器收到的请求的 term 号是过期的，那么它会拒绝此次请求。
+
+下面这张图是我手绘的，更容易理解一些，就很贴心：
+
+![Raft 任期逻辑演进 (Term Progression)](https://oss.javaguide.cn/github/javaguide/distributed-system/protocol/raft-term-progression.png)
 
 ### 2.3 日志
 
 - `entry`：每一个事件成为 entry，只有 Leader 可以创建 entry。entry 的内容为`<term,index,cmd>`其中 cmd 是可以应用到状态机的操作。
 - `log`：由 entry 构成的数组，每一个 entry 都有一个表明自己在 log 中的 index。只有 Leader 才可以改变其他节点的 log。entry 总是先被 Leader 添加到自己的 log 数组中，然后再发起共识请求，获得同意后才会被 Leader 提交给状态机。Follower 只能从 Leader 获取新日志和当前的 commitIndex，然后把对应的 entry 应用到自己的状态机中。
 
+补充两个常用指针：
+
+- `commitIndex`：已提交（committed）的最大日志索引；表示哪些日志已经被集群确认并可以安全地应用到状态机。
+- `lastApplied`：已被状态机应用（applied）的最大日志索引；通常 lastApplied ≤ commitIndex。
+
 ## 3 领导人选举
 
-raft 使用心跳机制来触发 Leader 的选举。
+![Raft Leader 选举流程](https://oss.javaguide.cn/github/javaguide/distributed-system/protocol/raft-election.png)
 
-如果一台服务器能够收到来自 Leader 或者 Candidate 的有效信息，那么它会一直保持为 Follower 状态，并且刷新自己的 electionElapsed，重新计时。
+Raft 使用心跳机制来触发 Leader 的选举。
+
+如果一台服务器持续收到来自 Leader 的 AppendEntries（心跳或日志复制）等合法 RPC，它会保持为 Follower 状态并刷新选举计时器。
 
 Leader 会向所有的 Follower 周期性发送心跳来保证自己的 Leader 地位。如果一个 Follower 在一个周期内没有收到心跳信息，就叫做选举超时，然后它就会认为此时没有可用的 Leader，并且开始进行一次选举以选出一个新的 Leader。
 
-为了开始新的选举，Follower 会自增自己的 term 号并且转换状态为 Candidate。然后他会向所有节点发起 RequestVoteRPC 请求， Candidate 的状态会持续到以下情况发生：
+为了开始新的选举，Follower 会自增自己的 term 号并且转换状态为 Candidate。然后他会向所有节点发起 RequestVote RPC 请求， Candidate 的状态会持续到以下情况发生：
 
 - 赢得选举
 - 其他节点赢得选举
@@ -103,7 +123,7 @@ Leader 会向所有的 Follower 周期性发送心跳来保证自己的 Leader �
 
 由于可能同一时刻出现多个 Candidate，导致没有 Candidate 获得大多数选票，如果没有其他手段来重新分配选票的话，那么可能会无限重复下去。
 
-raft 使用了随机的选举超时时间来避免上述情况。每一个 Candidate 在发起选举后，都会随机化一个新的选举超时时间，这种机制使得各个服务器能够分散开来，在大多数情况下只有一个服务器会率先超时；它会在其他服务器超时之前赢得选举。
+Raft 使用了随机的选举超时时间来避免上述情况。每一个 Candidate 在发起选举后，都会随机化一个新的选举超时时间，这种机制使得各个服务器能够分散开来，在大多数情况下只有一个服务器会率先超时；它会在其他服务器超时之前赢得选举。
 
 ## 4 日志复制
 
@@ -113,9 +133,13 @@ Leader 收到客户端请求后，会生成一个 entry，包含`<index,term,cmd
 
 如果 Follower 接受该 entry，则会将 entry 添加到自己的日志后面，同时返回给 Leader 同意。
 
-如果 Leader 收到了多数的成功响应，Leader 会将这个 entry 应用到自己的状态机中，之后可以称这个 entry 是 committed 的，并且向客户端返回执行结果。
+如果 Leader 收到了多数 Follower 对该日志复制成功的响应，Leader 会推进自己的 commitIndex，并在随后将这些已提交（committed）的日志按顺序应用（apply）到状态机后再向客户端返回结果。
 
-raft 保证以下两个性质：
+需要注意一个关键限制：Leader 只能基于"当前任期（current term）内产生的日志在多数派上复制成功"来推进 commitIndex。对于之前任期遗留的日志，即使它们已经被复制到多数节点，Leader 也不应仅凭多数派直接提交；通常会通过提交当前任期的一条新日志（常见做法是当选后追加并提交一条 no-op 日志）来间接推动历史日志一并提交。
+
+Follower 不会自行决定提交点；它们从 Leader 的 AppendEntries RPC 中携带的 leaderCommit 得知当前可提交的最大索引，并将本地 commitIndex 更新为 min(leaderCommit, lastLogIndex)，再按序 apply 到状态机。
+
+Raft 保证以下两个性质：
 
 - 在两个日志里，有两个 entry 拥有相同的 index 和 term，那么它们一定有相同的 cmd
 - 在两个日志里，有两个 entry 拥有相同的 index 和 term，那么它们前面的 entry 也一定相同
@@ -126,7 +150,13 @@ raft 保证以下两个性质：
 
 为了使得 Follower 的日志和自己的日志一致，Leader 需要找到 Follower 与它日志一致的地方，然后删除 Follower 在该位置之后的日志，接着把这之后的日志发送给 Follower。
 
-`Leader` 给每一个`Follower` 维护了一个 `nextIndex`，它表示 `Leader` 将要发送给该追随者的下一条日志条目的索引。当一个 `Leader` 开始掌权时，它会将 `nextIndex` 初始化为它的最新的日志条目索引数+1。如果一个 `Follower` 的日志和 `Leader` 的不一致，`AppendEntries` 一致性检查会在下一次 `AppendEntries RPC` 时返回失败。在失败之后，`Leader` 会将 `nextIndex` 递减然后重试 `AppendEntries RPC`。最终 `nextIndex` 会达到一个 `Leader` 和 `Follower` 日志一致的地方。这时，`AppendEntries` 会返回成功，`Follower` 中冲突的日志条目都被移除了，并且添加所缺少的上了 `Leader` 的日志条目。一旦 `AppendEntries` 返回成功，`Follower` 和 `Leader` 的日志就一致了，这样的状态会保持到该任期结束。
+`Leader` 给每一个`Follower` 维护了一个 `nextIndex`，它表示 `Leader` 将要发送给该追随者的下一条日志条目的索引。当一个 `Leader` 开始掌权时，它会将 `nextIndex` 初始化为它的最新的日志条目索引数+1。如果一个 `Follower` 的日志和 `Leader` 的不一致，`AppendEntries` 一致性检查会在下一次 `AppendEntries RPC` 时返回失败。
+
+（朴素实现）在失败之后，`Leader` 会将 `nextIndex` 递减然后重试 `AppendEntries RPC`，直到找到 Leader 与 Follower 日志一致的位置。
+
+（工程优化）实际生产实现通常会加入快速回退（Fast Backup）：Follower 在拒绝 AppendEntries 时返回冲突日志对应的任期（term）以及该任期的边界索引，Leader 据此一次性跳过整段冲突区间，显著减少重试次数。
+
+最终 `nextIndex` 会达到一个 `Leader` 和 `Follower` 日志一致的地方。这时，`AppendEntries` 会返回成功，`Follower` 中冲突的日志条目都被移除了，并且添加所缺少的上了 `Leader` 的日志条目。一旦 `AppendEntries` 返回成功，`Follower` 和 `Leader` 的日志就一致了，这样的状态会保持到该任期结束。
 
 ## 5 安全性
 
@@ -134,19 +164,23 @@ raft 保证以下两个性质：
 
 Leader 需要保证自己存储全部已经提交的日志条目。这样才可以使日志条目只有一个流向：从 Leader 流向 Follower，Leader 永远不会覆盖已经存在的日志条目。
 
-每个 Candidate 发送 RequestVoteRPC 时，都会带上最后一个 entry 的信息。所有节点收到投票信息时，会对该 entry 进行比较，如果发现自己的更新，则拒绝投票给该 Candidate。
+每个 Candidate 发送 RequestVote RPC 时，都会带上最后一个 entry 的信息。所有节点收到投票信息时，会对该 entry 进行比较，如果发现自己的更新，则拒绝投票给该 Candidate。
 
 判断日志新旧的方式：如果两个日志的 term 不同，term 大的更新；如果 term 相同，更长的 index 更新。
 
-### 5.2 节点崩溃
+### 5.2 提交规则（只提交当前任期日志）
 
-如果 Leader 崩溃，集群中的节点在 electionTimeout 时间内没有收到 Leader 的心跳信息就会触发新一轮的选主，在选主期间整个集群对外是不可用的。
+Leader 推进 commitIndex 时，需要满足"当前任期产生的某条日志已复制到多数派"这一条件。对于旧任期遗留的日志，即使它们已经复制到多数派，Leader 也不应仅凭此直接提交；通常通过提交当前任期的一条新日志（常见为 no-op）来间接提交历史日志。这一限制用于避免 Leader 频繁切换时出现已提交日志被覆盖的安全性问题。
 
-如果 Follower 和 Candidate 崩溃，处理方式会简单很多。之后发送给它的 RequestVoteRPC 和 AppendEntriesRPC 会失败。由于 raft 的所有请求都是幂等的，所以失败的话会无限的重试。如果崩溃恢复后，就可以收到新的请求，然后选择追加或者拒绝 entry。
+### 5.3 节点崩溃
 
-### 5.3 时间与可用性
+如果 Leader 崩溃，节点在 electionTimeout 内收不到心跳会触发新一轮选主；在选主完成前，系统通常无法对外提供线性一致的写入（以及线性一致读），表现为一段不可用窗口。
 
-raft 的要求之一就是安全性不依赖于时间：系统不能仅仅因为一些事件发生的比预想的快一些或者慢一些就产生错误。为了保证上述要求，最好能满足以下的时间条件：
+如果 Follower 和 Candidate 崩溃，处理方式会简单很多。之后发送给它的 RequestVote RPC 和 AppendEntries RPC 会失败。由于 Raft 的所有请求都是幂等的，所以失败的话会无限的重试。如果崩溃恢复后，就可以收到新的请求，然后选择追加或者拒绝 entry。
+
+### 5.4 时间与可用性
+
+Raft 的要求之一就是安全性不依赖于时间：系统不能仅仅因为一些事件发生的比预想的快一些或者慢一些就产生错误。为了保证上述要求，最好能满足以下的时间条件：
 
 `broadcastTime << electionTimeout << MTBF`
 
@@ -160,7 +194,7 @@ raft 的要求之一就是安全性不依赖于时间：系统不能仅仅因为
 
 由于`broadcastTime`和`MTBF`是由系统决定的属性，因此需要决定`electionTimeout`的时间。
 
-一般来说，broadcastTime 一般为 `0.5～20ms`，electionTimeout 可以设置为 `10～500ms`，MTBF 一般为一两个月。
+一般来说，broadcastTime 一般为 `0.5～20ms`，electionTimeout 可以设置为 `10～500ms`（工程上常见如 150–300ms），MTBF 一般为一两个月。
 
 ## 6 参考
 
