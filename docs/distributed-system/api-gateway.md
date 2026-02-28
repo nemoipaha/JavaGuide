@@ -6,17 +6,36 @@ category: 分布式
 
 ## 什么是网关？
 
-微服务背景下，一个系统被拆分为多个服务，但是像安全认证，流量控制，日志，监控等功能是每个服务都需要的，没有网关的话，我们就需要在每个服务中单独实现，这使得我们做了很多重复的事情并且没有一个全局的视图来统一管理这些功能。
+API 网关（API Gateway）是位于客户端与后端服务之间的**统一入口**，所有客户端请求先经过网关，再由网关路由到具体的目标服务。
+
+### 核心价值
+
+在微服务架构下，一个系统被拆分为多个服务。像**安全认证、流量控制、日志、监控**等功能是每个服务都需要的。如果没有网关，我们需要在每个服务中单独实现这些功能，导致：
+
+- **代码重复**：相同逻辑在多个服务中冗余实现
+- **管理分散**：缺乏统一的配置和监控视图
+- **维护成本高**：功能变更需要修改所有服务
 
 ![网关示意图](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/api-gateway-overview.png)
 
-一般情况下，网关可以为我们提供请求转发、安全认证（身份/权限认证）、流量控制、负载均衡、降级熔断、日志、监控、参数校验、协议转换等功能。
+### 核心职责
 
-上面介绍了这么多功能，实际上，网关主要做了两件事情：**请求转发** + **请求过滤**。
+网关的功能虽然繁多，但核心可以概括为两件事：
 
-由于引入网关之后，会多一步网络转发，因此性能会有一点影响（几乎可以忽略不计，尤其是内网访问的情况下）。 另外，我们需要保障网关服务的高可用，避免单点风险。
+| 职责         | 说明                                | 典型功能                               |
+| ------------ | ----------------------------------- | -------------------------------------- |
+| **请求转发** | 将客户端请求路由到正确的目标服务    | 动态路由、负载均衡、协议转换           |
+| **请求过滤** | 在请求到达后端服务前/后进行拦截处理 | 身份认证、权限校验、限流熔断、日志记录 |
 
-如下图所示，网关服务外层通过 Nginx（其他负载均衡设备/软件也行） 进⾏负载转发以达到⾼可⽤。Nginx 在部署的时候，尽量也要考虑高可用，避免单点风险。
+网关可以提供请求转发、安全认证（身份/权限认证）、流量控制、负载均衡、降级熔断、日志、监控、参数校验、协议转换等功能。
+
+**网关在微服务架构中的位置**：所有客户端请求先到达网关，网关负责统一的认证鉴权、流量控制、路由分发，后端服务专注于业务逻辑处理。
+
+### 高可用部署
+
+引入网关后会增加一次网络转发（性能损耗在内网环境下通常可忽略），但同时也引入了新的单点风险。因此，网关服务本身必须保障高可用：
+
+如下图所示，网关服务外层通过 Nginx（或其他负载均衡设备/软件）进行负载转发以达到高可用。Nginx 在部署时也应考虑高可用，避免单点风险。
 
 ![基于 Nginx 的服务端负载均衡](https://oss.javaguide.cn/github/javaguide/high-performance/load-balancing/server-load-balancing.png)
 
@@ -76,20 +95,40 @@ Zuul 主要通过过滤器（类似于 AOP）来过滤请求，从而实现网�
 
 ![Zuul2 架构](https://oss.javaguide.cn/github/javaguide/distributed-system/api-gateway/zuul2-core-architecture.png)
 
+> **重要提示**：Spring Cloud 官方已在 **Hoxton 版之后将 Zuul 1.x 移除**。尽管 Netflix 开源了 Zuul 2.x，但 Zuul 2.x 并未被集成到 Spring Cloud 主流版本中。对于 Spring Cloud 技术栈的新项目，**严禁选用 Zuul 1.x**，推荐直接使用 Spring Cloud Gateway。
+
 - GitHub 地址： <https://github.com/Netflix/zuul>
 - 官方 Wiki： <https://github.com/Netflix/zuul/wiki>
 
 ### Spring Cloud Gateway
 
-SpringCloud Gateway 属于 Spring Cloud 生态系统中的网关，其诞生的目标是为了替代老牌网关 **Zuul**。准确点来说，应该是 Zuul 1.x。SpringCloud Gateway 起步要比 Zuul 2.x 更早。
+Spring Cloud Gateway 属于 Spring Cloud 生态系统中的网关，其诞生的目标是为了替代老牌网关 **Zuul**（准确说是 Zuul 1.x）。值得注意的是，Spring Cloud Gateway 的起步时间早于 Zuul 2.x，两者属于不同的技术演进路线。
 
-为了提升网关的性能，SpringCloud Gateway 基于 Spring WebFlux 。Spring WebFlux 使用 Reactor 库来实现响应式编程模型，底层基于 Netty 实现同步非阻塞的 I/O。
+#### 为什么 Spring Cloud Gateway 性能更好？
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/api-gateway/springcloud-gateway-%20demo.png)
+| 版本                     | IO 模型             | 线程模型     | 吞吐量 | 延迟 |
+| ------------------------ | ------------------- | ------------ | ------ | ---- |
+| **Zuul 1.x**             | 同步阻塞（Servlet） | 每请求一线程 | 低     | 高   |
+| **Zuul 2.x**             | 异步非阻塞（Netty） | 事件循环     | 高     | 低   |
+| **Spring Cloud Gateway** | 异步非阻塞（Netty） | 事件循环     | 高     | 低   |
 
-Spring Cloud Gateway 不仅提供统一的路由方式，并且基于 Filter 链的方式提供了网关基本的功能，例如：安全，监控/指标，限流。
+Spring Cloud Gateway 基于 **Spring WebFlux** 实现，而不是传统的 Spring WebMVC。Spring WebFlux 使用 **Reactor** 库来实现响应式编程模型，底层基于 **Netty** 实现异步非阻塞的 I/O。
 
-Spring Cloud Gateway 和 Zuul 2.x 的差别不大，也是通过过滤器来处理请求。不过，目前更加推荐使用 Spring Cloud Gateway 而非 Zuul，Spring Cloud 生态对其支持更加友好。
+**响应式编程的优势**：
+
+- **非阻塞 I/O**：无需为每个请求分配独立线程，少量线程即可处理大量并发连接
+- **背压机制**：当下游服务处理能力不足时，自动调节上游请求速率，防止雪崩
+- **资源利用率高**：线程上下文切换开销大幅降低
+
+#### 核心概念
+
+Spring Cloud Gateway 的核心组件包括三个部分：
+
+1. **Route（路由）**：网关的基本构建块，由 ID、目标 URI、断言集合和过滤器集合组成
+2. **Predicate（断言）**：这是 Java 8 的 `Predicate` 函数，用于匹配 HTTP 请求（如路径、方法、请求头等）
+3. **Filter（过滤器）**：`GatewayFilter` 的实例，用于在请求被发送到下游服务之前或之后修改请求和响应
+
+Spring Cloud Gateway 和 Zuul 2.x 都是通过过滤器来处理请求，但 Spring Cloud Gateway 与 Spring 生态系统（如 Eureka、Consul、Config）集成更加紧密。目前，对于 Java 技术栈的项目，Spring Cloud Gateway 是推荐的选择。
 
 - Github 地址： <https://github.com/spring-cloud/spring-cloud-gateway>
 - 官网： <https://spring.io/projects/spring-cloud-gateway>
@@ -118,12 +157,18 @@ OpenResty 基于 Nginx，主要还是看中了其优秀的高并发能力。不�
 Kong 是一款基于 [OpenResty](https://github.com/openresty/) （Nginx + Lua）的高性能、云原生、可扩展、生态丰富的网关系统，主要由 3 个组件组成：
 
 - Kong Server：基于 Nginx 的服务器，用来接收 API 请求。
-- Apache Cassandra/PostgreSQL：用来存储操作数据。
-- Kong Dashboard：官方推荐 UI 管理工具，当然，也可以使用 RESTful 方式 管理 Admin api。
+- Apache Cassandra/PostgreSQL：用来存储操作数据（传统模式）。
+- Kong Manager：官方 UI 管理工具，提供可视化的 API 管理、监控和配置功能（有 OSS 开源版和 Enterprise 企业版）。也可使用 RESTful Admin API 进行管理。
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/api-gateway/kong-way.webp)
 
-由于默认使用 Apache Cassandra/PostgreSQL 存储数据，Kong 的整个架构比较臃肿，并且会带来高可用的问题。
+Kong 早期确实依赖外部数据库存储配置，架构相对复杂，需要额外保障数据库层的高可用。但自 **Kong 1.1** 版本起，已支持 **DB-less 模式（无库模式）**：
+
+- **传统模式**：使用 PostgreSQL 或 Cassandra 存储配置，适合需要持久化 API 数据的场景
+- **DB-less 模式**：通过声明式配置文件管理，无需部署数据库，架构更加轻量
+- **Kubernetes Ingress 模式**：通过 ConfigMap 或 CRD（Kubernetes Custom Resource Definitions）管理配置，无需数据库，是 K8s 环境下的主流用法
+
+> **注意**：本文后续讨论的 Kong 高可用问题，主要针对传统模式。在 K8s 环境使用 Ingress Controller 模式时，架构已大幅简化。
 
 Kong 提供了插件机制来扩展其功能，插件在 API 请求响应循环的生命周期中被执行。比如在服务上启用 Zipkin 插件：
 
@@ -171,13 +216,6 @@ APISIX 同样支持定制化的插件开发。开发者除了能够使用 Lua �
 - Github 地址：<https://github.com/apache/apisix>
 - 官网地址： <https://apisix.apache.org/zh/>
 
-相关阅读：
-
-- [为什么说 Apache APISIX 是最好的 API 网关？](https://mp.weixin.qq.com/s/j8ggPGEHFu3x5ekJZyeZnA)
-- [有了 NGINX 和 Kong，为什么还需要 Apache APISIX](https://www.apiseven.com/zh/blog/why-we-need-Apache-APISIX)
-- [APISIX 技术博客](https://www.apiseven.com/zh/blog)
-- [APISIX 用户案例](https://www.apiseven.com/zh/usercases)（推荐）
-
 ### Shenyu
 
 Shenyu 是一款基于 WebFlux 的可扩展、高性能、响应式网关，Apache 顶级开源项目。
@@ -186,21 +224,35 @@ Shenyu 是一款基于 WebFlux 的可扩展、高性能、响应式网关，Apac
 
 Shenyu 通过插件扩展功能，插件是 ShenYu 的灵魂，并且插件也是可扩展和热插拔的。不同的插件实现不同的功能。Shenyu 自带了诸如限流、熔断、转发、重写、重定向、和路由监控等插件。
 
-- Github 地址： <https://github.com/apache/incubator-shenyu>
+- Github 地址： <https://github.com/apache/shenyu>
 - 官网地址： <https://shenyu.apache.org/>
+
+### 网关对比一览
+
+| 特性           | Zuul 1.x | Zuul 2.x       | Spring Cloud Gateway      | Kong                          | APISIX           | Shenyu          |
+| -------------- | -------- | -------------- | ------------------------- | ----------------------------- | ---------------- | --------------- |
+| **IO 模型**    | 同步阻塞 | 异步非阻塞     | 异步非阻塞                | 异步非阻塞                    | 异步非阻塞       | 异步非阻塞      |
+| **底层技术**   | Servlet  | Netty          | WebFlux + Netty           | OpenResty (Nginx + Lua)       | OpenResty + etcd | WebFlux + Netty |
+| **性能**       | 低       | 高             | 高                        | 很高                          | 很高             | 高              |
+| **动态配置**   | 需重启   | 支持           | 支持                      | 支持                          | 支持（热更新）   | 支持            |
+| **配置存储**   | 内存     | 内存           | 内存                      | 数据库 / YAML / K8s CRD       | etcd（分布式）   | 内存/数据库     |
+| **限流熔断**   | 需集成   | 需集成         | 内置（集成 Resilience4j） | 插件                          | 插件             | 插件            |
+| **生态系统**   | Netflix  | Netflix        | Spring Cloud              | CNCF / Kong                   | Apache           | Apache          |
+| **运维复杂度** | 低       | 中             | 低                        | 中（DB-less） / 高（DB Mode） | 中               | 中              |
+| **学习曲线**   | 平缓     | 平缓           | 平缓                      | 陡峭（Lua）                   | 陡峭（Lua）      | 平缓（Java）    |
+| **适用场景**   | 遗留系统 | Netflix 技术栈 | Spring Cloud 生态         | 云原生、多语言                | 云原生、高性能   | Java 生态       |
 
 ## 如何选择？
 
-上面介绍的几个常见的网关系统，最常用的是 Spring Cloud Gateway、Kong、APISIX 这三个。
+选择 API 网关需要综合考虑技术栈、性能要求、团队能力和运维成本。
 
-对于公司业务以 Java 为主要开发语言的情况下，Spring Cloud Gateway 通常是个不错的选择，其优点有：简单易用、成熟稳定、与 Spring Cloud 生态系统兼容、Spring 社区成熟等等。不过，Spring Cloud Gateway 也有一些局限性和不足之处， 一般还需要结合其他网关一起使用比如 OpenResty。并且，其性能相比较于 Kong 和 APISIX，还是差一些。如果对性能要求比较高的话，Spring Cloud Gateway 不是一个好的选择。
-
-Kong 和 APISIX 功能更丰富，性能更强大，技术架构更贴合云原生。Kong 是开源 API 网关的鼻祖，生态丰富，用户群体庞大。APISIX 属于后来者，更优秀一些，根据 APISIX 官网介绍：“APISIX 已经生产可用，功能、性能、架构全面优于 Kong”。下面简单对比一下二者：
-
-- APISIX 基于 etcd 来做配置中心，不存在单点问题，云原生友好；而 Kong 基于 Apache Cassandra/PostgreSQL ，存在单点风险，需要额外的基础设施保障做高可用。
-- APISIX 支持热更新，并且实现了毫秒级别的热更新响应；而 Kong 不支持热更新。
-- APISIX 的性能要优于 Kong 。
-- APISIX 支持的插件更多，功能更丰富。
+| 场景                  | 推荐方案                                                   | 理由                                                              |
+| --------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------- |
+| **Spring Cloud 生态** | Spring Cloud Gateway                                       | 与 Spring Boot/Spring Cloud 无缝集成，配置简单                    |
+| **高性能 / 云原生**   | APISIX                                                     | 基于 etcd 的热更新、性能优异、云原生架构                          |
+| **多语言生态**        | Kong                                                       | 插件丰富、支持多语言开发、社区成熟                                |
+| **Netflix 技术栈**    | Zuul 2.x                                                   | 与 Eureka、Ribbon、Hystrix 等组件无缝配合                         |
+| **双层架构（推荐）**  | Kong/APISIX（流量网关） + Spring Cloud Gateway（业务网关） | 流量网关处理 SSL、WAF、全局限流；业务网关处理微服务鉴权、参数聚合 |
 
 ## 参考
 
