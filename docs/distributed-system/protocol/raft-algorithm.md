@@ -139,22 +139,65 @@ Leader 收到客户端请求后，会生成一个 entry，包含`<index,term,cmd
 
 Follower 不会自行决定提交点；它们从 Leader 的 AppendEntries RPC 中携带的 leaderCommit 得知当前可提交的最大索引，并将本地 commitIndex 更新为 min(leaderCommit, lastLogIndex)，再按序 apply 到状态机。
 
-Raft 保证以下两个性质：
+### 4.1 日志匹配属性（Log Matching Property）
 
-- 在两个日志里，有两个 entry 拥有相同的 index 和 term，那么它们一定有相同的 cmd
-- 在两个日志里，有两个 entry 拥有相同的 index 和 term，那么它们前面的 entry 也一定相同
+Raft 通过 **日志匹配属性（Log Matching Property）** 保证日志绝对不会分叉，这是 Raft 安全性的基石之一。该属性包含两个核心保证：
 
-通过“仅有 Leader 可以生成 entry”来保证第一个性质，第二个性质需要一致性检查来进行保证。
+- **保证一**：如果两个日志在相同 index 位置的 entry 具有相同的 term，那么它们存储的 cmd 一定相同
+- **保证二**：如果两个日志在相同 index 位置的 entry 具有相同的 term，那么该位置之前的所有 entry 也完全相同
 
-一般情况下，Leader 和 Follower 的日志保持一致，然后，Leader 的崩溃会导致日志不一样，这样一致性检查会产生失败。Leader 通过强制 Follower 复制自己的日志来处理日志的不一致。这就意味着，在 Follower 上的冲突日志会被领导者的日志覆盖。
+#### 归纳法证明
+
+日志匹配属性通过归纳法得以保证：
+
+1. **基础情况**：日志为空时，属性自然成立
+2. **归纳步骤**：假设日志在 index N 之前完全一致，当 Leader 尝试追加 entry N+1 时，通过 **AppendEntries RPC 的一致性检查** 确保：
+
+```
+AppendEntries RPC 参数：
+- prevLogIndex：前一条日志的索引（Leader 认为与 Follower 对齐的位置）
+- prevLogTerm：前一条日志的任期
+- entries[]：待追加的新日志条目
+```
+
+**一致性检查逻辑**：
+
+- Follower 收到 AppendEntries 请求后，检查本地日志中 index = prevLogIndex 的位置
+- 如果该位置的 entry.term == prevLogTerm，说明Leader和Follower在prevLogIndex之前的日志完全一致，通过检查
+- 如果不存在或 term 不匹配，拒绝追加，返回失败
+
+**关键点**：通过检查 prevLogIndex 和 prevLogTerm 的配对，Leader 和 Follower 能够**数学上确保**它们对日志历史达成一致。只有当"最后一个已知一致点"确实一致时，才会追加新日志。这形成了归纳证明的传递链条：
+
+```
+entry[0] 一致 → entry[1] 一致 → entry[2] 一致 → ... → entry[N] 一致
+    ↑_____________通过 prevLogIndex/prevLogTerm 递归验证_____________↑
+```
+
+因此，日志绝不会出现两个不同的值在同一 index 位置被"提交"的情况——即日志不分叉。
+
+#### 工程实现优化
+
+在实际生产实现（如 etcd 3.5.x）中，除了上述基础的一致性检查外，还包含多项工程优化：
+
+- **快速回退（Fast Backup）**：当 AppendEntries 一致性检查失败时，Follower 返回冲突日志对应的 term 及其边界索引（该 term 的第一条和最后一条 index），Leader 据此一次性跳过整段冲突区间，而非逐条递减 nextIndex 重试。
+
+- **重试风暴防护**：高负载下可能出现大量 AppendEntries 失败重试，实现中通常会加入：
+  - **Jitter 退避**：重试间隔加入随机抖动，避免多个 Follower 同时重试
+  - **背压机制**：限制单个 Follower 的重试速率，防止占用过多网络带宽
+
+这些优化不影响日志匹配属性的理论正确性，而是提升了系统在异常场景下的恢复效率。
+
+### 4.2 日志不一致的恢复
+
+一般情况下，Leader 和 Follower 的日志保持一致，但 Leader 的崩溃会导致日志出现差异。此时 AppendEntries 的一致性检查会失败，Leader 通过强制 Follower 复制自己的日志来处理日志的不一致。这就意味着，在 Follower 上的冲突日志会被领导者的日志覆盖。
 
 为了使得 Follower 的日志和自己的日志一致，Leader 需要找到 Follower 与它日志一致的地方，然后删除 Follower 在该位置之后的日志，接着把这之后的日志发送给 Follower。
 
 `Leader` 给每一个`Follower` 维护了一个 `nextIndex`，它表示 `Leader` 将要发送给该追随者的下一条日志条目的索引。当一个 `Leader` 开始掌权时，它会将 `nextIndex` 初始化为它的最新的日志条目索引数+1。如果一个 `Follower` 的日志和 `Leader` 的不一致，`AppendEntries` 一致性检查会在下一次 `AppendEntries RPC` 时返回失败。
 
-（朴素实现）在失败之后，`Leader` 会将 `nextIndex` 递减然后重试 `AppendEntries RPC`，直到找到 Leader 与 Follower 日志一致的位置。
+**（朴素实现）**在失败之后，`Leader` 会将 `nextIndex` 递减然后重试 `AppendEntries RPC`，直到找到 Leader 与 Follower 日志一致的位置。
 
-（工程优化）实际生产实现通常会加入快速回退（Fast Backup）：Follower 在拒绝 AppendEntries 时返回冲突日志对应的任期（term）以及该任期的边界索引，Leader 据此一次性跳过整段冲突区间，显著减少重试次数。
+**（工程优化）**实际生产实现通常会加入快速回退（Fast Backup）：Follower 在拒绝 AppendEntries 时返回冲突日志对应的任期（term）以及该任期的边界索引，Leader 据此一次性跳过整段冲突区间，显著减少重试次数。
 
 最终 `nextIndex` 会达到一个 `Leader` 和 `Follower` 日志一致的地方。这时，`AppendEntries` 会返回成功，`Follower` 中冲突的日志条目都被移除了，并且添加所缺少的上了 `Leader` 的日志条目。一旦 `AppendEntries` 返回成功，`Follower` 和 `Leader` 的日志就一致了，这样的状态会保持到该任期结束。
 
@@ -172,11 +215,64 @@ Leader 需要保证自己存储全部已经提交的日志条目。这样才可�
 
 Leader 推进 commitIndex 时，需要满足"当前任期产生的某条日志已复制到多数派"这一条件。对于旧任期遗留的日志，即使它们已经复制到多数派，Leader 也不应仅凭此直接提交；通常通过提交当前任期的一条新日志（常见为 no-op）来间接提交历史日志。这一限制用于避免 Leader 频繁切换时出现已提交日志被覆盖的安全性问题。
 
-### 5.3 节点崩溃
+### 5.3 节点崩溃与网络分区
+
+如果 Follower 和 Candidate 崩溃，处理方式会简单很多。之后发送给它的 RequestVote RPC 和 AppendEntries RPC 会失败。由于 Raft 的所有请求都是幂等的，所以失败的话会无限的重试。如果崩溃恢复后，就可以收到新的请求，然后选择追加或者拒绝 entry。
 
 如果 Leader 崩溃，节点在 electionTimeout 内收不到心跳会触发新一轮选主；在选主完成前，系统通常无法对外提供线性一致的写入（以及线性一致读），表现为一段不可用窗口。
 
-如果 Follower 和 Candidate 崩溃，处理方式会简单很多。之后发送给它的 RequestVote RPC 和 AppendEntries RPC 会失败。由于 Raft 的所有请求都是幂等的，所以失败的话会无限的重试。如果崩溃恢复后，就可以收到新的请求，然后选择追加或者拒绝 entry。
+**量化分析**：在 5 节点集群中，Leader 崩溃后的不可用窗口通常小于 1 秒（P99 < 500ms 选举超时 + 一轮选举时间）。这是 **PACELC 定理**的体现：发生分区（P）时，系统选择牺牲可用性（A）以保证一致性（C）。幂等重试机制确保节点恢复后能安全追赶数据状态。
+
+#### 单节点隔离与 Term 暴增问题
+
+在标准 Raft 算法中，**单节点网络隔离**可能导致 **Term 暴增（Term Inflation）** 问题，造成"劣币驱逐良币"——一个被隔离的少数派节点在恢复后破坏健康集群的稳定性。
+
+**场景推演**：
+
+假设一个 5 节点集群，Leader 为节点 A，Follower 为 B、C、D、E。此时节点 E 发生网络分区，被彻底隔离：
+
+```
+正常区域：{A, B, C, D}    （Leader A + 多数派，可正常服务）
+隔离区域：{E}             （单节点隔离，无法收到心跳）
+```
+
+| 时间线 | 正常区域 {A, B, C, D}                             | 隔离区域 {E}                                   |
+| ------ | ------------------------------------------------- | ---------------------------------------------- |
+| T0     | Leader A 正常服务，Term = 5                       | E 收不到心跳，选举超时                         |
+| T1     | 集群继续正常工作                                  | E 自增 Term 发起选举（Term 6），但无响应       |
+| T2     | ...                                               | E 继续自增（Term 7, 8, ...），假设涨到 Term 99 |
+| T3     | 网络恢复，E 带着 Term 99 接入集群                 | E 向 {A, B, C, D} 广播 RequestVote (Term 99)   |
+| T4     | 节点 A 收到 Term 99 > 自己的 Term 5，**被迫退位** | E 的"高 Term"破坏了健康集群                    |
+
+**问题分析**：
+
+- {A, B, C, D} 是**合法的多数派**（4/5），系统本应继续正常工作
+- 节点 E 是**少数派**（1/5），它的隔离不应影响集群整体
+- **关键问题**：E 的 Term 暴涨导致健康的 Leader A 被迫下线
+- **后果**：整个集群需要重新选举，造成不必要的写入中断
+
+这是标准 Raft 的一个已知边界问题：少数派节点的"疯狂选举"会干扰多数派的正常运行。
+
+#### Pre-Vote 机制
+
+为了解决上述问题，Raft 的扩展方案 **Pre-Vote** 被提出。Pre-Vote 要求节点在真正发起选举前，先进行一次"预投票"：
+
+1. **预投票阶段**：Candidate 向其他节点发送 PreVoteRequest，携带自己的日志信息
+2. **预投票条件**：
+   - 候选人的日志至少与接收者一样新（选举限制）
+   - **接收者确认自己与 Leader 的连接已断开**（超过 electionTimeout 未收到心跳）
+3. **正式选举**：只有收到多数节点的 PreVote 响应后，才真正增加 term 并发起 RequestVote
+
+**Pre-Vote 如何防止 Term 暴增**：
+
+- 在上述单节点隔离场景中，E 在隔离期间发起 Pre-Vote 时，**其他节点仍能收到 Leader A 的心跳**
+- 因此其他节点会**拒绝 E 的 PreVote 请求**（因为与 Leader 连接正常）
+- E 无法获得多数 PreVote 响应，**不会真正增加 Term**
+- 网络恢复后，E 的 Term 仍然较低，不会干扰健康的 Leader A
+
+**核心思想**：只有确认自己与 Leader 失去连接后，节点才开始真正增加 Term。这有效防止了少数派节点的 Term 暴涨干扰多数派。
+
+Pre-Vote 机制已广泛应用于 etcd、TiKV、Consul 等生产级 Raft 实现。
 
 ### 5.4 时间与可用性
 
