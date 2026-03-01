@@ -236,6 +236,7 @@ Additionally, [GeeksforGeeks](https://www.geeksforgeeks.org/fundamentals-of-algo
 **Important Knowledge Points:**
 
 - [Detailed Explanation of 3 Common Cache Read and Write Strategies](./docs/database/redis/3-commonly-used-cache-read-and-write-strategies.md)
+- [Can Redis Be Used as a Message Queue? How to Implement It?](./docs/database/redis/redis-stream-mq.md)
 - [Detailed Explanation of Redis' 5 Basic Data Structures](./docs/database/redis/redis-data-structures-01.md)
 - [Detailed Explanation of Redis' 3 Special Data Structures](./docs/database/redis/redis-data-structures-02.md)
 - [Detailed Explanation of Redis Persistence Mechanism](./docs/database/redis/redis-persistence.md)

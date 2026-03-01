@@ -305,6 +305,7 @@ export default sidebar({
             "redis-questions-02",
             createImportantSection([
               "redis-delayed-task",
+              "redis-stream-mq",
               "3-commonly-used-cache-read-and-write-strategies",
               "redis-data-structures-01",
               "redis-data-structures-02",

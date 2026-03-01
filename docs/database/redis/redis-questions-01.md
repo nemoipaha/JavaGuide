@@ -163,125 +163,14 @@ Redis 从 4.0 版本开始，支持通过 Module 来扩展其功能以满足特�
 
 关于 Redis 实现分布式锁的详细介绍，可以看我写的这篇文章：[分布式锁详解](https://javaguide.cn/distributed-system/distributed-lock-implementations.html)。
 
-### Redis 可以做消息队列么？
+### Redis 可以做消息队列么？怎么实现？
 
-> 实际项目中使用 Redis 来做消息队列的非常少，毕竟有更成熟的消息队列中间件可以用。
+先说结论：
 
-先说结论：**可以是可以，但不建议使用 Redis 来做消息队列。和专业的消息队列相比，还是有很多欠缺的地方。**
+- **如果业务简单、量小、追求极致性能**，且能容忍极小概率的数据丢失，使用 **Redis Stream** 是最优解，因为它省去了部署维护 MQ 的成本，可以复用现有的 Redis 组件（大部分需要用到 MQ 的项目，通常都会需要 Redis）。
+- **如果是金融级业务、海量数据、需要严格保证不丢消息**，必须选择 **Kafka、RabbitMQ** 等更成熟的 MQ。
 
-**Redis 2.0 之前，如果想要使用 Redis 来做消息队列的话，只能通过 List 来实现。**
-
-通过 `RPUSH/LPOP` 或者 `LPUSH/RPOP` 即可实现简易版消息队列：
-
-```bash
-# 生产者生产消息
-> RPUSH myList msg1 msg2
-(integer) 2
-> RPUSH myList msg3
-(integer) 3
-# 消费者消费消息
-> LPOP myList
-"msg1"
-```
-
-不过，通过 `RPUSH/LPOP` 或者 `LPUSH/RPOP` 这样的方式存在性能问题，我们需要不断轮询去调用 `RPOP` 或 `LPOP` 来消费消息。当 List 为空时，大部分的轮询的请求都是无效请求，这种方式大量浪费了系统资源。
-
-因此，Redis 还提供了 `BLPOP`、`BRPOP` 这种阻塞式读取的命令（带 B-Blocking 的都是阻塞式），并且还支持一个超时参数。如果 List 为空，Redis 服务端不会立刻返回结果，它会等待 List 中有新数据后再返回或者是等待最多一个超时时间后返回空。如果将超时时间设置为 0 时，即可无限等待，直到弹出消息
-
-```bash
-# 超时时间为 10s
-# 如果有数据立刻返回，否则最多等待10秒
-> BRPOP myList 10
-null
-```
-
-**List 实现消息队列功能太简单，像消息确认机制等功能还需要我们自己实现，最要命的是没有广播机制，消息也只能被消费一次。**
-
-**Redis 2.0 引入了发布订阅 (pub/sub) 功能，解决了 List 实现消息队列没有广播机制的问题。**
-
-![Redis 发布订阅 (pub/sub) 功能](https://oss.javaguide.cn/github/javaguide/database/redis/redis-pub-sub.png)
-
-pub/sub 中引入了一个概念叫 **channel（频道）**，发布订阅机制的实现就是基于这个 channel 来做的。
-
-pub/sub 涉及发布者（Publisher）和订阅者（Subscriber，也叫消费者）两个角色：
-
-- 发布者通过 `PUBLISH` 投递消息给指定 channel。
-- 订阅者通过`SUBSCRIBE`订阅它关心的 channel。并且，订阅者可以订阅一个或者多个 channel。
-
-我们这里启动 3 个 Redis 客户端来简单演示一下：
-
-![pub/sub 实现消息队列演示](https://oss.javaguide.cn/github/javaguide/database/redis/redis-pubsub-message-queue.png)
-
-pub/sub 既能单播又能广播，还支持 channel 的简单正则匹配。不过，消息丢失（客户端断开连接或者 Redis 宕机都会导致消息丢失）、消息堆积（发布者发布消息的时候不会管消费者的具体消费能力如何）等问题依然没有一个比较好的解决办法。
-
-为此，Redis 5.0 新增加的一个数据结构 `Stream` 来做消息队列。`Stream` 支持：
-
-- 发布 / 订阅模式；
-- 按照消费者组进行消费（借鉴了 Kafka 消费者组的概念）；
-- 消息持久化（ RDB 和 AOF）；
-- ACK 机制（通过确认机制来告知已经成功处理了消息）；
-- 阻塞式获取消息。
-
-`Stream` 的结构如下：
-
-![](https://oss.javaguide.cn/github/javaguide/database/redis/redis-stream-structure.png)
-
-这是一个有序的消息链表，每个消息都有一个唯一的 ID 和对应的内容。ID 是一个时间戳和序列号的组合，用来保证消息的唯一性和递增性。内容是一个或多个键值对（类似 Hash 基本数据类型），用来存储消息的数据。
-
-这里再对图中涉及到的一些概念，进行简单解释：
-
-- `Consumer Group`：消费者组用于组织和管理多个消费者。消费者组本身不处理消息，而是再将消息分发给消费者，由消费者进行真正的消费。
-- `last_delivered_id`：标识消费者组当前消费位置的游标，消费者组中任意一个消费者读取了消息都会使 last_delivered_id 往前移动。
-- `pending_ids`：记录已经被客户端消费但没有 ack 的消息的 ID。
-
-下面是`Stream` 用作消息队列时常用的命令：
-
-- `XADD`：向流中添加新的消息。
-- `XREAD`：从流中读取消息。
-- `XREADGROUP`：从消费组中读取消息。
-- `XRANGE`：根据消息 ID 范围读取流中的消息。
-- `XREVRANGE`：与 `XRANGE` 类似，但以相反顺序返回结果。
-- `XDEL`：从流中删除消息。
-- `XTRIM`：修剪流的长度，可以指定修建策略（`MAXLEN`/`MINID`）。
-- `XLEN`：获取流的长度。
-- `XGROUP CREATE`：创建消费者组。
-- `XGROUP DESTROY`：删除消费者组。
-- `XGROUP DELCONSUMER`：从消费者组中删除一个消费者。
-- `XGROUP SETID`：为消费者组设置新的最后递送消息 ID。
-- `XACK`：确认消费组中的消息已被处理。
-- `XPENDING`：查询消费组中挂起（未确认）的消息。
-- `XCLAIM`：将挂起的消息从一个消费者转移到另一个消费者。
-- `XINFO`：获取流（`XINFO STREAM`）、消费组（`XINFO GROUPS`）或消费者（`XINFO CONSUMERS`）的详细信息。
-
-`Stream` 使用起来相对要麻烦一些，这里就不演示了。
-
-总的来说，`Stream` 已经可以满足一个消息队列的基本要求了。不过，`Stream` 在实际使用中依然会有一些小问题不太好解决，比如在 Redis 发生故障恢复后不能保证消息至少被消费一次。
-
-综上，和专业的消息队列相比，使用 Redis 来实现消息队列还是有很多欠缺的地方，比如消息丢失和堆积问题不好解决。因此，我们通常建议不要使用 Redis 来做消息队列，你完全可以选择市面上比较成熟的一些消息队列，比如 RocketMQ、Kafka。不过，如果你就是想要用 Redis 来做消息队列的话，那我建议你优先考虑 `Stream`，这是目前相对最优的 Redis 消息队列实现。
-
-相关阅读：[Redis 消息队列发展历程 - 阿里开发者 - 2022](https://mp.weixin.qq.com/s/gCUT5TcCQRAxYkTJfTRjJw)。
-
-### Redis 可以做搜索引擎么？
-
-Redis 是可以实现全文搜索引擎功能的，需要借助 **RediSearch**，这是一个基于 Redis 的搜索引擎模块。
-
-RediSearch 支持中文分词、聚合统计、停用词、同义词、拼写检查、标签查询、向量相似度查询、多关键词搜索、分页搜索等功能，算是一个功能比较完善的全文搜索引擎了。
-
-相比较于 Elasticsearch 来说，RediSearch 主要在下面两点上表现更优异一些：
-
-1. 性能更优秀：依赖 Redis 自身的高性能，基于内存操作（Elasticsearch 基于磁盘）。
-2. 较低内存占用实现快速索引：RediSearch 内部使用压缩的倒排索引，所以可以用较低的内存占用来实现索引的快速构建。
-
-对于小型项目的简单搜索场景来说，使用 RediSearch 来作为搜索引擎还是没有问题的（搭配 RedisJSON 使用）。
-
-对于比较复杂或者数据规模较大的搜索场景，还是不太建议使用 RediSearch 来作为搜索引擎，主要是因为下面这些限制和问题：
-
-1. 数据量限制：Elasticsearch 可以支持 PB 级别的数据量，可以轻松扩展到多个节点，利用分片机制提高可用性和性能。RedisSearch 是基于 Redis 实现的，其能存储的数据量受限于 Redis 的内存容量，不太适合存储大规模的数据（内存昂贵，扩展能力较差）。
-2. 分布式能力较差：Elasticsearch 是为分布式环境设计的，可以轻松扩展到多个节点。虽然 RedisSearch 支持分布式部署，但在实际应用中可能会面临一些挑战，如数据分片、节点间通信、数据一致性等问题。
-3. 聚合功能较弱：Elasticsearch 提供了丰富的聚合功能，而 RediSearch 的聚合功能相对较弱，只支持简单的聚合操作。
-4. 生态较差：Elasticsearch 可以轻松和常见的一些系统/软件集成比如 Hadoop、Spark、Kibana，而 RedisSearch 则不具备该优势。
-
-Elasticsearch 适用于全文搜索、复杂查询、实时数据分析和聚合的场景，而 RediSearch 适用于快速数据存储、缓存和简单查询的场景。
+这个问题还是挺重要，技术选型也能用上，我专门写了一篇文章详细介绍和分析，推荐时间充足的同学抽空认真看几遍，收藏一下：[Redis 能做消息队列吗？怎么实现？](https://javaguide.cn/database/redis/redis-stream-mq.html)。
 
 ### 如何基于 Redis 实现延时任务？
 

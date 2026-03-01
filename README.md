@@ -223,6 +223,7 @@ JVM 这部分内容主要参考 [JVM 虚拟机规范-Java8](https://docs.oracle.
 **重要知识点：**
 
 - [3 种常用的缓存读写策略详解](./docs/database/redis/3-commonly-used-cache-read-and-write-strategies.md)
+- [Redis 能做消息队列吗？怎么实现？](./docs/database/redis/redis-stream-mq.md)
 - [Redis 5 种基本数据结构详解](./docs/database/redis/redis-data-structures-01.md)
 - [Redis 3 种特殊数据结构详解](./docs/database/redis/redis-data-structures-02.md)
 - [Redis 持久化机制详解](./docs/database/redis/redis-persistence.md)
