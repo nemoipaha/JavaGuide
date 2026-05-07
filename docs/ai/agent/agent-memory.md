@@ -402,11 +402,11 @@ paths:
 
 **Auto Memory（自动积累）**：Claude 根据对话自动写入的笔记，包括调试模式、代码习惯、工作流偏好。它存在 `~/.claude/projects/<project>/memory/` 目录下，`MEMORY.md` 是入口文件，细节笔记在子文件中。
 
-> ⚠️ **使用注意**：
->
-> 1. **MEMORY.md 加载限制**：仅加载前 200 行或 25KB 的内容，超出部分不会被读取。Claude 会将详细内容拆分到 Topic 文件中。
-> 2. **退化问题**：经过 20-30 个会话后，Auto Memory 笔记质量可能下降（矛盾条目、过时信息累积）。社区有 dream-skill 等工具可执行记忆整合（4 阶段：Orient → Gather Signal → Consolidate → Prune），但这非官方正式功能。
-> 3. **禁用方式**：除了 `/memory` 切换和 `autoMemoryEnabled` 配置，还可通过环境变量 `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` 禁用。**CI/CD 场景推荐使用此方式**，因为自动化管线不需要 Claude 积累构建环境的笔记。
+⚠️ **使用注意**：
+
+1.  **MEMORY.md 加载限制**：仅加载前 200 行或 25KB 的内容，超出部分不会被读取。Claude 会将详细内容拆分到 Topic 文件中。
+2.  **退化问题**：经过 20-30 个会话后，Auto Memory 笔记质量可能下降（矛盾条目、过时信息累积）。社区有 dream-skill 等工具可执行记忆整合（4 阶段：Orient → Gather Signal → Consolidate → Prune），但这非官方正式功能。
+3.  **禁用方式**：除了 `/memory` 切换和 `autoMemoryEnabled` 配置，还可通过环境变量 `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` 禁用。**CI/CD 场景推荐使用此方式**，因为自动化管线不需要 Claude 积累构建环境的笔记。
 
 注意：Auto Memory 需要 Claude Code v2.1.59+，默认开启。
 

@@ -27,7 +27,7 @@ head:
 9. ⭐️ 你为什么选择 PostgreSQL + pgvector？
 10. 为什么不选择 MySQL 搭配向量数据库呢？
 
-## 先搞懂：Embedding 和向量检索是什么关系？
+## Embedding 和向量检索是什么关系？
 
 向量数据库不是直接理解文本，而是存储和检索 Embedding。
 
