@@ -16,19 +16,14 @@ export const ai = arraySidebar([
     icon: ICONS.CHAT,
     prefix: "agent/",
     children: [
-      { text: "一文搞懂 AI Agent 核心概念", link: "agent-basis" },
-      { text: "大模型提示词工程实践指南", link: "prompt-engineering" },
+      { text: "AI Agent 核心概念详解", link: "agent-basis" },
+      { text: "AI Agent 记忆系统详解", link: "agent-memory" },
+      { text: "提示词工程实战指南", link: "prompt-engineering" },
       { text: "上下文工程实战指南", link: "context-engineering" },
       { text: "万字详解 Agent Skills", link: "skills" },
       { text: "万字拆解 MCP 协议", link: "mcp" },
-      {
-        text: "一文搞懂 Harness Engineering",
-        link: "harness-engineering",
-      },
-      {
-        text: "AI 工作流中的 Workflow、Graph 与 Loop",
-        link: "workflow-graph-loop",
-      },
+      { text: "Harness Engineering 详解", link: "harness-engineering" },
+      { text: "AI 工作流中详解", link: "workflow-graph-loop" },
     ],
   },
   {
@@ -41,6 +36,8 @@ export const ai = arraySidebar([
         text: "万字详解 RAG 向量索引算法和向量数据库",
         link: "rag-vector-store",
       },
+      { text: "万字详解 GraphRAG", link: "graphrag" },
+      { text: "万字详解 RAG 检索优化", link: "rag-optimization" },
     ],
   },
   {
