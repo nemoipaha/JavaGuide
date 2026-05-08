@@ -18,6 +18,10 @@ export const aiCoding = arraySidebar([
         text: "Claude Code 接入第三方模型实战",
         link: "cc-glm5.1",
       },
+      {
+        text: "DeepSeek V4 + Claude Code 实战",
+        link: "deepseek-v4-claude-code",
+      },
     ],
   },
   {

@@ -17,6 +17,7 @@ head:
 - [《IDEA 搭配 Qoder 插件实战》](./idea-qoder-plugin.md)：从接口优化到代码重构，展示如何在 JetBrains IDE 中利用 AI 完成从分析到落地的完整闭环
 - [《Trae + MiniMax 多场景实战》](./trae-m2.7.md)：使用 Trae IDE 接入 MiniMax 大模型，通过 Redis 故障排查和跨语言重构场景，分享 AI 辅助编程的实战经验与踩坑心得
 - [《Claude Code 接入第三方模型实战》](./cc-glm5.1.md)：通过 Claude Code 接入 GLM-5.1，完成 JVM 智能诊断助手搭建和百万级数据量慢查询治理，分享 AI 辅助编程的工作方法与踩坑心得
+- [《DeepSeek V4 + Claude Code 实战》](./deepseek-v4-claude-code.md)：深入体验 DeepSeek V4 与 Claude Code 的集成，实测代码审计、Flyway 集成、多模型协同等场景，评估 V4-Pro 和 V4-Flash 的真实代码能力
 
 ## AI 编程技巧
 
@@ -35,6 +36,7 @@ head:
 - [IDEA + Qoder 插件多场景实战：接口优化与代码重构](./idea-qoder-plugin.md) - 通过深分页优化、祖传代码重构两个真实案例，展示 AI 辅助编程的实战效果
 - [Trae + MiniMax 多场景实战：Redis 故障排查与跨语言重构](./trae-m2.7.md) - 使用 Trae IDE 接入 MiniMax 大模型，通过 Redis 故障排查和跨语言重构场景，分享 AI 辅助编程的实战经验
 - [Claude Code 接入第三方模型实战：JVM 智能诊断与慢查询治理](./cc-glm5.1.md) - 通过 Claude Code 接入 GLM-5.1，完成 JVM 智能诊断助手搭建和百万级数据量慢查询治理
+- [DeepSeek V4 + Claude Code 实战：代码能力深度测评](./deepseek-v4-claude-code.md) - 深入体验 DeepSeek V4 与 Claude Code 的集成，实测代码审计、Flyway 集成、多模型协同等场景
 
 ### AI 编程技巧
 
