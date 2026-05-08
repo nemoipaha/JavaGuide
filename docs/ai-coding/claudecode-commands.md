@@ -10,8 +10,6 @@ head:
 
 <!-- @include: @article-header.snippet.md -->
 
-# Claude Code 核心命令详解：simplify、review、loop、batch
-
 说实话，Claude Code 里有些命令我用了一次就离不开了，但问身边朋友知道的人反而不多。这个系列文章就来聊聊这些被严重低估的命令——`/simplify`、`/review`、`/loop`、`/batch`。
 
 这些命令你知道有就行了，不用硬背。打个斜杠 `/` 就出来了，比你吭哧吭哧打字快多了。

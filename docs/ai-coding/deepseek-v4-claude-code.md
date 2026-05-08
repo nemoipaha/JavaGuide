@@ -10,8 +10,6 @@ head:
 
 <!-- @include: @article-header.snippet.md -->
 
-# DeepSeek V4 + Claude Code 实战：代码能力深度测评
-
 这几天 AI 圈基本被一件事刷屏了——DeepSeek V4 发布，同步开源。从技术报告里的 benchmark 数据到社区的实测反馈，到处都在讨论。
 
 开源模型在对话和写作上已经做得相当成熟，各家你追我赶，迭代速度肉眼可见。但 Agent Coding 是另一回事。
@@ -25,7 +23,7 @@ head:
 这篇文章接近 **7000 字**，建议收藏，通过本文你将搞懂：
 
 1. **Claude Code 接入 DeepSeek V4 的两种方式**：配置文件法 + CC Switch 可视化切换
-2. **三个真实开发任务的实战记录**：V4-Pro 干起活来到底怎么样
+2. **五个真实开发任务的实战记录**：V4-Pro 干起活来到底怎么样
 3. **DeepSeek V4-Pro 和 Flash 的核心参数与定价**：值不值得切
 4. **场景建议**：什么时候该用，什么时候先观望
 
