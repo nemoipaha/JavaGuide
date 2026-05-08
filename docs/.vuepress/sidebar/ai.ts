@@ -8,6 +8,7 @@ export const ai = arraySidebar([
     prefix: "llm-basis/",
     children: [
       { text: "万字拆解 LLM 运行机制", link: "llm-operation-mechanism" },
+      { text: "大模型 API 调用工程实践", link: "llm-api-engineering" },
       { text: "AI 编程开放性面试题", link: "ai-ide" },
     ],
   },
@@ -45,6 +46,10 @@ export const ai = arraySidebar([
     icon: ICONS.CODE,
     prefix: "ai-coding/",
     children: [
+      {
+        text: "AI 编程 Skills 工具指南",
+        link: "programmer-essential-skills",
+      },
       {
         text: "IDEA + Qoder 插件多场景实战",
         link: "idea-qoder-plugin",
