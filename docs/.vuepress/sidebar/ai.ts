@@ -9,6 +9,10 @@ export const ai = arraySidebar([
     children: [
       { text: "万字拆解 LLM 运行机制", link: "llm-operation-mechanism" },
       { text: "大模型 API 调用工程实践", link: "llm-api-engineering" },
+      {
+        text: "大模型结构化输出详解",
+        link: "structured-output-function-calling",
+      },
       { text: "AI 编程开放性面试题", link: "ai-ide" },
     ],
   },
