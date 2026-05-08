@@ -7,10 +7,6 @@ export const aiCoding = arraySidebar([
     icon: ICONS.CODE,
     children: [
       {
-        text: "AI 编程必备 Skills 推荐",
-        link: "programmer-essential-skills",
-      },
-      {
         text: "IDEA + Qoder 插件多场景实战",
         link: "idea-qoder-plugin",
       },
@@ -29,16 +25,16 @@ export const aiCoding = arraySidebar([
     icon: ICONS.TOOL,
     children: [
       {
+        text: "AI 编程必备 Skills 推荐",
+        link: "programmer-essential-skills",
+      },
+      {
         text: "Claude Code 使用指南",
         link: "claudecode-tips",
       },
       {
         text: "OpenAI Codex 最佳实践指南",
         link: "codex-best-practices",
-      },
-      {
-        text: "OpenAI Codex Chrome 扩展",
-        link: "codex-chrome-extension",
       },
     ],
   },
