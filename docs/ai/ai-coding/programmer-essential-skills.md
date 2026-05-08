@@ -1,5 +1,5 @@
 ---
-title: AI 编程 Skills 工具指南：Superpowers、Web Access 与代码审查实战
+title: AI 编程必备 Skills 推荐：TDD、代码审查与网页自动化实战
 description: 实战分享 6 个 AI 编程 Skills 工具，覆盖 TDD 开发流程、代码审查、UI 设计、网页自动化与 Skill 开发，让 AI 编程 Agent 真正成为生产力利器。
 category: AI 编程实战
 head:

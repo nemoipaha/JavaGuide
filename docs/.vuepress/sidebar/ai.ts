@@ -47,7 +47,7 @@ export const ai = arraySidebar([
     prefix: "ai-coding/",
     children: [
       {
-        text: "AI 编程 Skills 工具指南",
+        text: "AI 编程必备 Skills 推荐",
         link: "programmer-essential-skills",
       },
       {
