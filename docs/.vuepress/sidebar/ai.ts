@@ -62,6 +62,13 @@ export const ai = arraySidebar([
         text: "Claude Code 接入第三方模型实战",
         link: "cc-glm5.1",
       },
+    ],
+  },
+  {
+    text: "AI 编程技巧",
+    icon: ICONS.TOOL,
+    prefix: "ai-coding/",
+    children: [
       {
         text: "Claude Code 使用指南",
         link: "claudecode-tips",
@@ -69,6 +76,10 @@ export const ai = arraySidebar([
       {
         text: "OpenAI Codex 最佳实践指南",
         link: "codex-best-practices",
+      },
+      {
+        text: "OpenAI Codex Chrome 扩展",
+        link: "codex-chrome-extension",
       },
     ],
   },
