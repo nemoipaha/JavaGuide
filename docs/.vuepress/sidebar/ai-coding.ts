@@ -29,6 +29,10 @@ export const aiCoding = arraySidebar([
         link: "programmer-essential-skills",
       },
       {
+        text: "Claude Code 核心命令详解",
+        link: "claudecode-commands",
+      },
+      {
         text: "Claude Code 使用指南",
         link: "claudecode-tips",
       },

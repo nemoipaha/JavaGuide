@@ -23,6 +23,7 @@ head:
 掌握工具的使用技巧能让 AI 编程效率翻倍。这个系列聚焦工具的使用方法和最佳实践：
 
 - [《AI 编程必备 Skills 推荐》](./programmer-essential-skills.md)：实战分享 6 个 AI 编程 Skills，覆盖 TDD 开发流程、代码审查、UI 设计、网页自动化与 Skill 开发
+- [《Claude Code 核心命令详解》](./claudecode-commands.md)：深入解析 /simplify、/review、/loop、/batch 等核心命令的使用方法与实战技巧
 - [《Claude Code 使用指南》](./claudecode-tips.md)：整理自 Anthropic 官方技术文档并融合实战经验，系统梳理 Claude Code 的配置、能力扩展、高效工作流与进阶技巧
 - [《OpenAI Codex 最佳实践指南》](./codex-best-practices.md)：综合官方文档与实战经验，系统梳理 Codex 云端智能体和 CLI 的提示工程、工具配置与安全策略
 
@@ -37,5 +38,6 @@ head:
 ### AI 编程技巧
 
 - [AI 编程必备 Skills 推荐：TDD、代码审查与网页自动化实战](./programmer-essential-skills.md) - 实战分享 6 个 AI 编程 Skills，覆盖 TDD 开发流程、代码审查、UI 设计、网页自动化与 Skill 开发
+- [Claude Code 核心命令详解：simplify、review、loop、batch](./claudecode-commands.md) - 深入解析 /simplify、/review、/loop、/batch 等核心命令的使用方法与实战技巧
 - [Claude Code 使用指南：配置、工作流与进阶技巧](./claudecode-tips.md) - 整理自 Anthropic 官方技术文档并融合实战经验，系统梳理 Claude Code 的使用技巧
 - [OpenAI Codex 最佳实践指南：提示工程、工具配置与安全策略](./codex-best-practices.md) - 综合官方文档与实战经验，系统梳理 Codex 的最佳实践
