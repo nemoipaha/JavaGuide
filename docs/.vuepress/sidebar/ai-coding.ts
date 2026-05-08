@@ -48,6 +48,10 @@ export const aiCoding = arraySidebar([
         text: "AI 编程选 CLI 还是 IDE？",
         link: "cli-vs-ide",
       },
+      {
+        text: "AI 编程开放性面试题",
+        link: "ai-ide",
+      },
     ],
   },
 ]);
