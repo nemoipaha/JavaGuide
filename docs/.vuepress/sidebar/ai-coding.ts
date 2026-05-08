@@ -40,6 +40,10 @@ export const aiCoding = arraySidebar([
         text: "OpenAI Codex 最佳实践指南",
         link: "codex-best-practices",
       },
+      {
+        text: "AI 编程选 CLI 还是 IDE？",
+        link: "cli-vs-ide",
+      },
     ],
   },
 ]);

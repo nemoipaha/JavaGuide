@@ -26,6 +26,7 @@ head:
 - [《Claude Code 核心命令详解》](./claudecode-commands.md)：深入解析 /simplify、/review、/loop、/batch 等核心命令的使用方法与实战技巧
 - [《Claude Code 使用指南》](./claudecode-tips.md)：整理自 Anthropic 官方技术文档并融合实战经验，系统梳理 Claude Code 的配置、能力扩展、高效工作流与进阶技巧
 - [《OpenAI Codex 最佳实践指南》](./codex-best-practices.md)：综合官方文档与实战经验，系统梳理 Codex 云端智能体和 CLI 的提示工程、工具配置与安全策略
+- [《AI 编程选 CLI 还是 IDE？》](./cli-vs-ide.md)：深度对比 Claude Code、Cursor、Kiro、TRAE 等主流 AI 编程工具，解析 CLI 与 IDE 的核心差异与选型建议
 
 ## 文章列表
 
@@ -41,3 +42,4 @@ head:
 - [Claude Code 核心命令详解：simplify、review、loop、batch](./claudecode-commands.md) - 深入解析 /simplify、/review、/loop、/batch 等核心命令的使用方法与实战技巧
 - [Claude Code 使用指南：配置、工作流与进阶技巧](./claudecode-tips.md) - 整理自 Anthropic 官方技术文档并融合实战经验，系统梳理 Claude Code 的使用技巧
 - [OpenAI Codex 最佳实践指南：提示工程、工具配置与安全策略](./codex-best-practices.md) - 综合官方文档与实战经验，系统梳理 Codex 的最佳实践
+- [AI 编程选 CLI 还是 IDE？一文帮你彻底搞清楚](./cli-vs-ide.md) - 深度对比 Claude Code、Cursor、Kiro、TRAE 等主流 AI 编程工具，解析 CLI 与 IDE 的核心差异与选型建议
