@@ -1,0 +1,45 @@
+import { arraySidebar } from "vuepress-theme-hope";
+import { ICONS } from "./constants.js";
+
+export const aiCoding = arraySidebar([
+  {
+    text: "AI 编程实战",
+    icon: ICONS.CODE,
+    children: [
+      {
+        text: "AI 编程必备 Skills 推荐",
+        link: "programmer-essential-skills",
+      },
+      {
+        text: "IDEA + Qoder 插件多场景实战",
+        link: "idea-qoder-plugin",
+      },
+      {
+        text: "Trae + MiniMax 多场景实战",
+        link: "trae-m2.7",
+      },
+      {
+        text: "Claude Code 接入第三方模型实战",
+        link: "cc-glm5.1",
+      },
+    ],
+  },
+  {
+    text: "AI 编程技巧",
+    icon: ICONS.TOOL,
+    children: [
+      {
+        text: "Claude Code 使用指南",
+        link: "claudecode-tips",
+      },
+      {
+        text: "OpenAI Codex 最佳实践指南",
+        link: "codex-best-practices",
+      },
+      {
+        text: "OpenAI Codex Chrome 扩展",
+        link: "codex-chrome-extension",
+      },
+    ],
+  },
+]);

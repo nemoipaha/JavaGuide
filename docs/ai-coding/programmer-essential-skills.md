@@ -10,7 +10,7 @@ head:
 
 <!-- @include: @article-header.snippet.md -->
 
-之前写了篇[万字详解 Agent Skills](./agent/skills.md)，聊了 Skills 是什么、怎么用、和 Prompt / MCP 有什么区别。这篇不聊概念，直接分享 6 个我日常在用的 Skills，覆盖开发流程、代码审查、UI 设计、网页操作这些场景：
+之前写了篇[万字详解 Agent Skills](/ai/agent/skills.html)，聊了 Skills 是什么、怎么用、和 Prompt / MCP 有什么区别。这篇不聊概念，直接分享 6 个我日常在用的 Skills，覆盖开发流程、代码审查、UI 设计、网页操作这些场景：
 
 - 让 AI 自动遵循 TDD 流程，先写测试再写实现
 - 一键生成符合行业标准的设计系统
