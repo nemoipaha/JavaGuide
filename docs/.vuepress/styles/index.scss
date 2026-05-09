@@ -4,6 +4,29 @@ body {
   }
 }
 
+#markdown-content img,
+.vp-content img,
+.theme-hope-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.article-promo-image {
+  display: block;
+  margin: 1rem auto;
+
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.article-footer-qrcode {
+  display: block;
+  width: min(612px, 100%);
+  margin: 0 auto;
+}
+
 // ============================================
 // 沉浸式阅读模式 - 隐藏导航栏、侧边栏和目录
 // ============================================
