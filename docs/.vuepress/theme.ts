@@ -5,6 +5,22 @@ import navbar from "./navbar.js";
 import sidebar from "./sidebar/index.js";
 
 const __dirname = getDirname(import.meta.url);
+const docsearchAppId = process.env.DOCSEARCH_APP_ID;
+const docsearchApiKey = process.env.DOCSEARCH_API_KEY;
+const docsearchIndexName = process.env.DOCSEARCH_INDEX_NAME;
+const docsearchOptions =
+  docsearchAppId && docsearchApiKey && docsearchIndexName
+    ? {
+        appId: docsearchAppId,
+        apiKey: docsearchApiKey,
+        indexName: docsearchIndexName,
+        locales: {
+          "/": {
+            placeholder: "搜索 JavaGuide",
+          },
+        },
+      }
+    : null;
 
 export default hopeTheme({
   hostname: "https://javaguide.cn/",
@@ -81,9 +97,8 @@ export default hopeTheme({
       assets: "//at.alicdn.com/t/c/font_2922463_o9q9dxmps9.css",
     },
 
-    search: {
-      isSearchable: (page) => page.path !== "/",
-      maxSuggestions: 10,
-    },
+    // 申请到 DocSearch key 后配置上面的环境变量；在此之前关闭本地搜索索引。
+    ...(docsearchOptions ? { docsearch: docsearchOptions } : {}),
+    search: false,
   },
 });

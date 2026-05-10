@@ -78,6 +78,7 @@ const isUnlocked = ref(false);
 const inputCode = ref("");
 const showError = ref(false);
 const showDialog = ref(false);
+const hasAppliedLock = ref(false);
 const teleportTargetSelector = ref<string | null>(null);
 const globalUnlockKey = `javaguide_site_unlocked_${config.unlockVersion ?? "v1"}`;
 
@@ -153,42 +154,50 @@ const buildLockCSS = (height: string) => `
   }
 `;
 
-const applyLockStyle = async () => {
-  if (typeof document === "undefined" || !isClientReady.value) return;
+const clearLockStyle = () => {
+  teleportTargetSelector.value = null;
+  if (!hasAppliedLock.value) return;
 
   document.querySelectorAll(`[${DATA_ATTR}]`).forEach((el) => {
     el.removeAttribute(DATA_ATTR);
   });
+  document.getElementById(STYLE_ID)?.remove();
+  hasAppliedLock.value = false;
+};
 
-  teleportTargetSelector.value = null;
-  const styleEl = ensureStyleEl();
+const applyLockStyle = async () => {
+  if (typeof document === "undefined" || !isClientReady.value) return;
 
   if (!isLockedPage.value || isUnlocked.value) {
-    styleEl.innerHTML = "";
+    clearLockStyle();
     return;
   }
+
+  clearLockStyle();
 
   await nextTick();
   const contentEl = findContentEl();
   if (!contentEl) {
-    styleEl.innerHTML = "";
+    clearLockStyle();
     return;
   }
 
   // 路由切换期间节点可能已卸载，避免 hydration 阶段异常
   if (!document.contains(contentEl)) {
-    styleEl.innerHTML = "";
+    clearLockStyle();
     return;
   }
 
   // 内容不够长时不加锁、不展示按钮
   if (contentEl.scrollHeight <= toPx(visibleHeight.value)) {
-    styleEl.innerHTML = "";
+    clearLockStyle();
     return;
   }
 
+  const styleEl = ensureStyleEl();
   contentEl.setAttribute(DATA_ATTR, "true");
   styleEl.innerHTML = buildLockCSS(visibleHeight.value);
+  hasAppliedLock.value = true;
   if (!contentEl.id) {
     contentEl.id = "unlock-content-root";
   }
@@ -214,6 +223,8 @@ const handleUnlock = () => {
 
 onMounted(() => {
   isClientReady.value = true;
+  if (!isLockedPage.value) return;
+
   readUnlockState();
   nextTick(() => {
     applyLockStyle();
@@ -227,6 +238,13 @@ watch(
   () => pageData.value.path,
   async () => {
     if (!isClientReady.value) return;
+
+    if (!isLockedPage.value) {
+      showDialog.value = false;
+      clearLockStyle();
+      return;
+    }
+
     readUnlockState();
     showDialog.value = false;
     await applyLockStyle();

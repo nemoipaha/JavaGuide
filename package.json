@@ -40,8 +40,8 @@
   },
   "dependencies": {
     "@vuepress/bundler-vite": "2.0.0-rc.26",
+    "@vuepress/plugin-docsearch": "2.0.0-rc.127",
     "@vuepress/plugin-feed": "2.0.0-rc.127",
-    "@vuepress/plugin-search": "2.0.0-rc.127",
     "husky": "9.1.7",
     "markdownlint-cli2": "0.17.1",
     "mathjax-full": "3.2.2",
