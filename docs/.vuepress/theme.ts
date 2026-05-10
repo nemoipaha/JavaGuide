@@ -36,6 +36,7 @@ export default hopeTheme({
   docsDir: "docs",
   pure: true,
   focus: false,
+  print: false,
   breadcrumb: false,
   navbar,
   sidebar,
@@ -96,6 +97,8 @@ export default hopeTheme({
     icon: {
       assets: "//at.alicdn.com/t/c/font_2922463_o9q9dxmps9.css",
     },
+
+    photoSwipe: false,
 
     // 申请到 DocSearch key 后配置上面的环境变量；在此之前关闭本地搜索索引。
     ...(docsearchOptions ? { docsearch: docsearchOptions } : {}),

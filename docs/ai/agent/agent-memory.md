@@ -111,7 +111,7 @@ head:
 
 记忆检索（Retrieve）通常发生在新 Session 开始时。系统把用户 Query 向量化，再和长期记忆库里的条目做语义相似性检索，将命中率最高的一批条目 prepend 进 System Prompt 或放进平行 slot。首包路径上跑一次向量检索很常见，但 VectorStore 的 P99 会直接吃进 TTFT。常见缓解方式是用 Redis 做预热线，或者把浅层偏好、静态画像全量预载，深度记忆再走异步精排，或者和生成流水线重叠，把等人感压下去。
 
-#### 长期记忆和 RAG 有什么区别？
+### 长期记忆和 RAG 有什么区别？
 
 ![长期记忆与 RAG（检索增强生成）的区别](https://oss.javaguide.cn/github/javaguide/ai/agent/agent-memory-rag-vs-memory.svg)
 
