@@ -1,6 +1,16 @@
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 import { viteBundler } from "@vuepress/bundler-vite";
 import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
+
+const require = createRequire(import.meta.url);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const mermaidComponentPath = join(
+  dirname(require.resolve("@vuepress/plugin-markdown-chart/package.json")),
+  "lib/client/components/Mermaid.js",
+);
 
 export default defineUserConfig({
   dest: "./dist",
@@ -52,6 +62,12 @@ export default defineUserConfig({
 
   bundler: viteBundler({
     viteOptions: {
+      resolve: {
+        alias: {
+          "@vuepress/plugin-markdown-chart/client/components/Mermaid.js":
+            mermaidComponentPath,
+        },
+      },
       css: {
         preprocessorOptions: {
           scss: {
