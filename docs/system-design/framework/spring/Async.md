@@ -441,7 +441,7 @@ Callable<Object> task = () -> {
 
 #### 3、提交异步任务
 
-在 `AsyncExecutionInterceptor # invoke()` 中将要执行的方法封装为 Callable 任务之后，就会将任务交给执行器来执行。提交相关的代码如下：
+在 `AsyncExecutionInterceptor#invoke()` 中将要执行的方法封装为 Callable 任务之后，就会将任务交给执行器来执行。提交相关的代码如下：
 
 ```JAVA
 protected Object doSubmit(Callable<Object> task, AsyncTaskExecutor executor, Class<?> returnType) {
