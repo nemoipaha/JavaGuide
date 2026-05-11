@@ -35,13 +35,21 @@ export const ai = arraySidebar([
     icon: ICONS.SEARCH,
     prefix: "rag/",
     children: [
-      { text: "万字详解 RAG 基础概念", link: "rag-basis" },
+      { text: "RAG 基础概念详解", link: "rag-basis" },
       {
-        text: "万字详解 RAG 向量索引算法和向量数据库",
+        text: "RAG 文档处理与切分策略",
+        link: "rag-document-processing",
+      },
+      {
+        text: "RAG 向量索引算法和向量数据库",
         link: "rag-vector-store",
       },
-      { text: "万字详解 GraphRAG", link: "graphrag" },
-      { text: "万字详解 RAG 检索优化", link: "rag-optimization" },
+      {
+        text: "RAG 知识库文档更新策略",
+        link: "rag-knowledge-update",
+      },
+      { text: "GraphRAG 详解", link: "graphrag" },
+      { text: "RAG 检索优化", link: "rag-optimization" },
     ],
   },
 ]);

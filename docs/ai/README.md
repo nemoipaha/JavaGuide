@@ -56,6 +56,8 @@ RAG 是企业级 AI 应用的核心技术，但很多开发者只停留在”把
 - [《万字详解 RAG 向量索引算法和向量数据库》](./rag/rag-vector-store.md)：HNSW、IVFFLAT 等索引算法的原理，以及怎么选向量数据库
 - [《万字详解 GraphRAG》](./rag/graphrag.md)：知识图谱驱动的 RAG，深入解析实体、关系、社区发现、全局检索与局部检索
 - [《万字详解 RAG 检索优化》](./rag/rag-optimization.md)：Chunk 策略、Hybrid Search、Query Rewrite、Rerank、上下文压缩等实战优化
+- [《RAG 文档处理与切分策略》](./rag/rag-document-processing.md)：从文档解析、清洗、Chunking 到多模态内容处理的完整链路拆解
+- [《RAG 知识库文档更新策略》](./rag/rag-knowledge-update.md)：增量更新、版本控制、去重与全量重建的工程实践
 
 ### 4. 工具与协议
 
@@ -105,6 +107,8 @@ AI 编程相关面试题详见 [AI 编程](../ai-coding/) 专栏。
 - [万字详解 RAG 向量索引算法和向量数据库](./rag/rag-vector-store.md) - 掌握 HNSW、IVFFLAT 等索引算法原理，学会选择合适的向量数据库
 - [万字详解 GraphRAG](./rag/graphrag.md) - 深入理解知识图谱驱动的 RAG，掌握实体、关系、社区发现、全局检索与局部检索
 - [万字详解 RAG 检索优化](./rag/rag-optimization.md) - 掌握 Chunk 策略、Hybrid Search、Query Rewrite、Rerank、上下文压缩等实战优化
+- [RAG 文档处理与切分策略：从解析、清洗、Chunking 到多模态内容处理](./rag/rag-document-processing.md) - 深入解析 RAG 文档进入索引前的完整链路，涵盖文件解析、清洗、结构化、Chunking 策略与多模态内容处理
+- [RAG 知识库文档更新策略：增量更新、版本控制、去重与全量重建](./rag/rag-knowledge-update.md) - 深入解析 RAG 知识库更新的工程实践，涵盖增量更新、版本回滚、去重与灰度发布
 
 ### AI 编程实战
 

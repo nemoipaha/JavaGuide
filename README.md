@@ -35,6 +35,15 @@
 - [一文搞懂 Harness Engineering](./docs/ai/agent/harness-engineering.md)
 - [AI 工作流中的 Workflow、Graph 与 Loop](./docs/ai/agent/workflow-graph-loop.md)
 
+### RAG
+
+- [万字详解 RAG 基础概念](./docs/ai/rag/rag-basis.md)
+- [万字详解 RAG 向量索引算法和向量数据库](./docs/ai/rag/rag-vector-store.md)
+- [万字详解 GraphRAG](./docs/ai/rag/graphrag.md)
+- [万字详解 RAG 检索优化](./docs/ai/rag/rag-optimization.md)
+- [RAG 文档处理与切分策略](./docs/ai/rag/rag-document-processing.md)
+- [RAG 知识库文档更新策略](./docs/ai/rag/rag-knowledge-update.md)
+
 ## 面试准备
 
 - [⭐Java 后端面试通关计划（涵盖后端通用体系）](./docs/interview-preparation/backend-interview-plan.md) (一定要看 :+1:)
