@@ -1,6 +1,7 @@
 import { defineClientConfig } from "vuepress/client";
 import { defineAsyncComponent, h } from "vue";
 import DeferredLayoutToggle from "./components/DeferredLayoutToggle.vue";
+import ClickImagePreview from "./components/ClickImagePreview.vue";
 import LazyMermaid from "./components/LazyMermaid.vue";
 import GlobalUnlock from "./components/unlock/GlobalUnlock.vue";
 
@@ -13,5 +14,9 @@ export default defineClientConfig({
     app.component("Mermaid", LazyMermaid);
     app.component("UnlockContent", UnlockContent);
   },
-  rootComponents: [() => h(DeferredLayoutToggle), () => h(GlobalUnlock)],
+  rootComponents: [
+    () => h(DeferredLayoutToggle),
+    () => h(GlobalUnlock),
+    () => h(ClickImagePreview),
+  ],
 });
