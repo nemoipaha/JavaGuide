@@ -148,7 +148,7 @@ public class ScheduledThreadPoolExecutor
 
 状态只能单向流转：运行中（`RUNNING`）→ 关闭（`SHUTDOWN`）→ 整理中（`TIDYING`）→ 已终止（`TERMINATED`），或者运行中（`RUNNING`）→ 停止（`STOP`）→ 整理中（`TIDYING`）→ 已终止（`TERMINATED`）。在关闭（`SHUTDOWN`）状态下再调用 `shutdownNow()` 也会转为停止（`STOP`）。
 
-`shutdown()` 是"温和关闭"——中断空闲线程，但队列中的任务仍会执行完毕。`shutdownNow()` 是"强制关闭"——尝试中断所有正在运行的线程，并将队列中未执行的任务以 `List<Runnable>` 返回。`terminated()` 是一个空的钩子方法，可以通过继承 `ThreadPoolExecutor` 来重写它，用于在线程池终止后做清理工作。
+`shutdown()` 是“温和关闭”——中断空闲线程，但队列中的任务仍会执行完毕。`shutdownNow()` 是“强制关闭”——尝试中断所有正在运行的线程，并将队列中未执行的任务以 `List<Runnable>` 返回。`terminated()` 是一个空的钩子方法，可以通过继承 `ThreadPoolExecutor` 来重写它，用于在线程池终止后做清理工作。
 
 ### Worker 工作线程机制
 

@@ -645,7 +645,7 @@ graph TD
   - 原理：虚拟机会维护一个列表，该列表中会记录哪些内存块是可用的，在分配的时候，找一块儿足够大的内存块儿来划分给对象实例，最后更新列表记录。
   - 使用该分配方式的 GC 收集器：CMS
 
-选择以上两种方式中的哪一种，取决于 Java 堆内存是否规整。而 Java 堆内存是否规整，取决于 GC 收集器的算法是"标记-清除"，还是"标记-整理"（也称作"标记-压缩"），值得注意的是，复制算法内存也是规整的。
+选择以上两种方式中的哪一种，取决于 Java 堆内存是否规整。而 Java 堆内存是否规整，取决于 GC 收集器的算法是“标记-清除”，还是“标记-整理”（也称作“标记-压缩”），值得注意的是，复制算法内存也是规整的。
 
 **内存分配并发问题（补充内容，需要掌握）**
 
@@ -705,7 +705,7 @@ HotSpot 虚拟机主要使用的就是这种方式来进行对象访问。
 - 《自己动手写 Java 虚拟机》
 - Chapter 2. The Structure of the Java Virtual Machine：<https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html>
 - JVM 栈帧内部结构-动态链接：<https://chenxitag.com/archives/368>
-- Java 中 new String("字面量") 中 "字面量" 是何时进入字符串常量池的? - 木女孩的回答 - 知乎：<https://www.zhihu.com/question/55994121/answer/147296098>
+- Java 中 new String(“字面量”) 中 “字面量” 是何时进入字符串常量池的? - 木女孩的回答 - 知乎：<https://www.zhihu.com/question/55994121/answer/147296098>
 - JVM 常量池中存储的是对象还是引用呢？ - RednaxelaFX 的回答 - 知乎：<https://www.zhihu.com/question/57109429/answer/151717241>
 - <http://www.pointsoftware.ch/en/under-the-hood-runtime-data-areas-javas-memory-model/>
 - <https://dzone.com/articles/jvm-permgen-%E2%80%93-where-art-thou>
