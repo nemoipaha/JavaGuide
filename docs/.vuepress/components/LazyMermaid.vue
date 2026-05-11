@@ -29,6 +29,7 @@ const loadMermaidComponent = async () => {
   if (MermaidComponent.value) return;
 
   const { default: Mermaid } = await import(
+    /* @vite-ignore */
     "@vuepress/plugin-markdown-chart/client/components/Mermaid.js"
   );
   MermaidComponent.value = markRaw(Mermaid);
