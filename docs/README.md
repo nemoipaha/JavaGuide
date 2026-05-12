@@ -48,7 +48,7 @@ footer: |-
 - **计算机基础**：[计算机网络常见面试题总结](https://javaguide.cn/cs-basics/network/other-network-questions.html)、[操作系统常见面试题总结](https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html)
 - **数据库系列**：[MySQL 常见面试题总结](https://javaguide.cn/database/mysql/mysql-questions-01.html)、[Redis 常见面试题总结](https://javaguide.cn/database/redis/redis-questions-01.html)
 - **分布式系列**：[分布式高频面试题总结](https://interview.javaguide.cn/distributed-system/distributed-system.html)
-- **AI 应用开发**：[万字拆解 LLM 运行机制](https://javaguide.cn/ai/llm-basis/llm-operation-mechanism.html)（深入剖析大模型底层原理）、[万字详解 RAG 基础概念](https://javaguide.cn/ai/rag/rag-basis.html)（企业级 AI 应用核心技术）
+- **AI 应用开发**：[面向后端开发者的 AI 应用开发、AI 编程实战与面试指南](https://javaguide.cn/ai/)
 
 ## 🚀 PDF 版本 & 面试交流群
 
