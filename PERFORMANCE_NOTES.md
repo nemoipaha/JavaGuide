@@ -12,7 +12,7 @@
 
 腾讯云 EdgeOne 已按以下思路调整：
 
-- HTML/JSON 不做长期缓存，避免发布后用户拿旧 HTML 引用新旧不匹配的 JS/CSS。
+- HTML 不缓存，避免发布后用户拿旧 HTML 引用新旧不匹配的 JS/CSS。
 - hash 静态资源使用长期缓存：
   - `/assets/*.js`
   - `/assets/*.css`
@@ -20,11 +20,14 @@
 - 图片资源使用较长缓存：
   - `jpg/jpeg/png/gif/bmp/svg/webp/ico`
   - 建议 30 天缓存。
-- HTML 可以短缓存或使用 CDN stale，但不要长期强缓存。
+- EdgeOne 节点缓存 TTL 已调整为遵循源站 `Cache-Control`。
+- EdgeOne 无 `Cache-Control` 头时已调整为不缓存。
+- EdgeOne 浏览器缓存 TTL 已设置为遵循源站 `Cache-Control`。
+- HTML 不再使用 CDN stale，发布后新访问应尽快拿到新 HTML。
 
 已验证过的线上响应特征：
 
-- 首页 HTML 使用短缓存/回源友好策略。
+- 首页 HTML 使用不缓存策略。
 - `/assets/app-*.js` 可命中 CDN，且适合一年 immutable。
 - `favicon.ico` 和图片类资源适合 30 天缓存。
 
@@ -37,6 +40,46 @@
 - 图片 30 天缓存。
 - 开启 gzip；如果环境支持，可在 CDN 层开启 Brotli。
 - 静态资源不要设置会破坏 CDN 压缩、转换或缓存的头。
+- 扩展名省略的 VuePress 路由，例如 `/ai/`、`/database/mysql/`，也要返回 HTML 不缓存头，不能只匹配 `*.html`。
+
+## 部署约定
+
+当前站点使用 Vite/VuePress 内容 hash 资源，发布时必须保留旧的 `/assets/*` 文件一段时间。
+
+原因：
+
+- 已打开页面的 SPA 运行时可能还引用上一版 chunk。
+- CDN 或浏览器可能短时间内仍持有旧 HTML。
+- 如果部署脚本先执行 `rm -rf /www/wwwroot/javaguide.cn/*`，旧 hash JS/CSS 会被删除；旧 HTML 或旧客户端再请求这些文件时会 404，表现为动态 import 失败、路由跳转失败或页面白屏。
+
+推荐发布方式：
+
+```bash
+set -e
+
+SITE_DIR="/www/wwwroot/javaguide.cn"
+DIST_DIR="/github/dist"
+VERIFY_FILE="/www/wwwroot/googleca8171acadbdab54.html"
+
+mkdir -p "$SITE_DIR/assets"
+
+# HTML、sitemap、manifest 等非 assets 文件跟随新版本删除旧文件。
+rsync -av --delete \
+  --exclude='assets/' \
+  "$DIST_DIR/" "$SITE_DIR/"
+
+# hash 资源只增量覆盖，不在每次部署时删除旧文件。
+rsync -av \
+  "$DIST_DIR/assets/" "$SITE_DIR/assets/"
+
+cp "$VERIFY_FILE" "$SITE_DIR/"
+```
+
+部署后 CDN 刷新建议：
+
+- 优先刷新 HTML、sitemap、manifest 等入口文件。
+- 不建议每次都刷新整个根目录；如果必须刷新根目录，前提是源站仍保留旧 assets。
+- 旧 assets 可用定时任务按 30-60 天清理，避免无限增长。
 
 ## 已完成优化
 
@@ -77,6 +120,8 @@
 - 关闭 `photoSwipe` 图片预览插件。
 - 原因：图片点击放大不是文档阅读首屏刚需，但会额外带来初始 JS 请求。
 - 如果后续仍需要图片放大能力，建议实现“点击图片后再懒加载预览库”。
+- 当前轻量图片预览组件 `ClickImagePreview` 已改为 mounted 后再渲染 Teleport。
+- 原因：Teleport 作为 root component 直接参与 SSR hydration 时，会导致 VuePress 首页被水合为空注释，表现为页面白屏且只剩 `Hydration completed but contains mismatches`。
 
 ### 打印功能
 
@@ -85,6 +130,13 @@
 - 对比构建显示，关闭打印按钮对 gzip 后 JS 体积影响只有几十到数百字节，属于噪声级别。
 - 结论：打印按钮不是当前电脑端卡顿的主要原因。
 - 注意：用户主动触发浏览器打印或打印预览时，超长页面仍可能因为分页、样式计算和大 DOM 导致短暂卡顿，但这只发生在打印流程中，不影响普通阅读首屏和滚动。
+
+### 版权复制插件
+
+- 已禁用 Theme Hope 的 `plugins.copyright`。
+- 原因：`@vuepress/plugin-copyright` 当前客户端代码在挂载时会执行 `document.querySelector("#app").style...`，没有空判断；线上部署后出现过 `Cannot read properties of null (reading 'style')`，会导致页面白屏。
+- 影响：禁用后不再自动给复制内容追加“原文链接/版权信息”；页脚 Copyright 展示不受影响。
+- 验证：clean build 通过，新的 `app-*.js` 中已不再包含 `querySelector("#app")`、`userSelect`、`setupCopyright` 相关代码。
 
 ## 最近一次构建验证
 

@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport v-if="isMounted" to="body">
     <transition name="image-preview-fade">
       <div
         v-if="previewImage"
@@ -39,6 +39,7 @@ const CONTENT_SELECTOR =
   "#markdown-content, .theme-hope-content, .vp-page-content, .vp-content";
 const IMAGE_SELECTOR = "img:not([no-view])";
 
+const isMounted = ref(false);
 const previewImage = ref<PreviewImage | null>(null);
 
 const getPreviewableImage = (
@@ -77,6 +78,8 @@ const handleKeydown = (event: KeyboardEvent) => {
 };
 
 watch(previewImage, (image) => {
+  if (typeof document === "undefined") return;
+
   document.documentElement.classList.toggle(
     "image-preview-open",
     Boolean(image),
@@ -84,6 +87,8 @@ watch(previewImage, (image) => {
 });
 
 onMounted(() => {
+  isMounted.value = true;
+
   document.addEventListener("click", handleClick);
   document.addEventListener("keydown", handleKeydown);
 });

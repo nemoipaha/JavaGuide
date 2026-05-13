@@ -79,14 +79,9 @@ export default hopeTheme({
     blog: true,
     sitemap: true,
 
-    copyright: {
-      author: "JavaGuide(javaguide.cn)",
-      license: "MIT",
-      triggerLength: 100,
-      maxLength: 700,
-      canonical: "https://javaguide.cn/",
-      global: true,
-    },
+    // The upstream copyright plugin can throw during hydration if `#app` is unavailable.
+    // Keep it disabled until the plugin adds a null-safe mount path.
+    copyright: false,
 
     feed: {
       atom: true,
