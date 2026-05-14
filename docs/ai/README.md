@@ -38,6 +38,8 @@ head:
 
 [《大模型结构化输出详解》](./llm-basis/structured-output-function-calling.md)深入拆解 JSON Schema、Function Calling、Tool Calling 与 MCP 的底层链路，结合 Java 后端示例讲清楚 Schema 设计、服务端校验、工具分发和安全治理。
 
+有了调用链路和结构化输出基础，还有一个问题没有解决：怎么知道你的 AI 应用到底好不好？[《AI 应用评测体系：从 Golden Set 构建到线上灰度闭环》](./llm-basis/llm-evaluation.md)系统拆解了评测的完整闭环：Golden Set 怎么构建、LLM-as-Judge 的三类偏差怎么管控、RAG 的检索指标和生成指标如何分段评测、Agent 轨迹准确率如何衡量、离线评测到线上灰度怎么串成一条发布流水线。
+
 ### 2. AI Agent 知识体系
 
 AI Agent 是当下最热的方向，但网上的资料要么太浅要么太散，很难串起来。[《一文搞懂 AI Agent 核心概念》](./agent/agent-basis.md)把 Agent 从 2022 到 2025 年的六代进化史梳理了一遍，讲清楚 Agent 和传统编程、Workflow 的本质区别，以及 Agent Loop、Context Engineering、Tools 注册这些核心概念。
@@ -90,6 +92,7 @@ AI 编程相关面试题详见 [AI 编程](../ai-coding/) 专栏。
 - [万字拆解 LLM 运行机制：Token、上下文与采样参数](./llm-basis/llm-operation-mechanism.md) - 深入剖析大模型底层原理，把 Token、上下文窗口、Temperature 等概念还原为清晰、可控的工程概念
 - [大模型 API 调用工程实践：流式输出、重试、限流与结构化返回](./llm-basis/llm-api-engineering.md) - 系统拆解 AI 应用调用大模型 API 的生产链路，覆盖流式输出、重试、限流、结构化返回与 Java 后端落地
 - [大模型结构化输出详解：JSON Schema、Function Calling 与工具调用](./llm-basis/structured-output-function-calling.md) - 深入拆解 JSON Schema、Function Calling、Tool Calling 与 MCP 的底层链路，结合 Java 后端示例讲清楚 Schema 设计、服务端校验、工具分发和安全治理
+- [AI 应用评测体系：从 Golden Set 构建到线上灰度闭环](./llm-basis/llm-evaluation.md) - 系统拆解 AI 应用评测完整闭环，覆盖 Golden Set 构建、LLM-as-Judge 偏差控制、RAG/Agent/结构化输出分领域指标体系、Trace 回放与 CI 自动回归落地
 
 ### AI Agent
 
