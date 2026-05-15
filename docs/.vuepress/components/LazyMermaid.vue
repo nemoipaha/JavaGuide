@@ -5,9 +5,14 @@
     :code="code"
     :title="title"
   />
-  <div v-else ref="placeholderEl" class="mermaid-lazy-placeholder">
-    <span class="mermaid-lazy-spinner" aria-hidden="true" />
-    <span>图表加载中</span>
+  <div
+    v-else
+    ref="placeholderEl"
+    class="mermaid-lazy-placeholder"
+    :class="{ 'is-error': loadError }"
+  >
+    <span v-if="!loadError" class="mermaid-lazy-spinner" aria-hidden="true" />
+    <span>{{ loadError ?? "图表加载中" }}</span>
   </div>
 </template>
 
@@ -23,16 +28,22 @@ defineProps<{
 const placeholderEl = shallowRef<HTMLElement | null>(null);
 const shouldRender = shallowRef(false);
 const MermaidComponent = shallowRef<Component | null>(null);
+const loadError = shallowRef<string | null>(null);
 let observer: IntersectionObserver | null = null;
 
 const loadMermaidComponent = async () => {
   if (MermaidComponent.value) return;
 
-  const { default: Mermaid } = await import(
-    /* @vite-ignore */
-    "@vuepress/plugin-markdown-chart/client/components/Mermaid.js"
-  );
-  MermaidComponent.value = markRaw(Mermaid);
+  try {
+    const { default: Mermaid } = await import(
+      "@vuepress/plugin-markdown-chart/client/components/Mermaid.js"
+    );
+    MermaidComponent.value = markRaw(Mermaid);
+    loadError.value = null;
+  } catch (error) {
+    console.error("Failed to load Mermaid component:", error);
+    loadError.value = "图表加载失败，请刷新重试";
+  }
 };
 
 const renderWhenVisible = () => {
@@ -76,6 +87,10 @@ onBeforeUnmount(() => {
   margin: 0.6em 0;
   color: var(--vp-c-text-mute);
   font-size: 0.9rem;
+}
+
+.mermaid-lazy-placeholder.is-error {
+  color: var(--vp-c-danger);
 }
 
 .mermaid-lazy-spinner {

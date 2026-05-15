@@ -92,6 +92,42 @@ cp "$VERIFY_FILE" "$SITE_DIR/"
   - `DOCSEARCH_INDEX_NAME`
 - 没有 DocSearch key 时关闭搜索，避免生成本地 `searchIndex.js`。
 - clean build 后已确认 `docs/.vuepress/.temp/internal/searchIndex.js` 不再生成。
+- Algolia 应用：
+  - 当前新应用 ID：`XXQ4GI90SC`
+  - 当前前端索引名：`javaguide`
+  - 当前前端 Search-Only API Key 已验证可用，掩码记录为：`3b514f...ef027b`
+- 官方 DocSearch Crawler 当前存在抽取不稳定问题：
+  - Crawler 能访问页面，但 UI 中 `recordExtractor` 没有稳定产出 records。
+  - 线上连续抓取还可能受 CDN/安全策略影响，导致部分页面拿不到完整正文。
+- 新增兜底索引脚本：`pnpm docsearch:index`
+  - 脚本位置：`scripts/docsearch-index.mjs`
+  - 推荐从本地构建产物 `dist` 生成索引，而不是在线抓取。
+  - 原因：`dist` 就是最终部署产物，索引内容和发布内容一致，也不会受 CDN/反爬/缓存影响。
+  - 推荐流程：
+
+```bash
+pnpm docs:build
+
+DOCSEARCH_APP_ID=XXQ4GI90SC \
+DOCSEARCH_INDEX_NAME=javaguide \
+DOCSEARCH_SOURCE_DIR=dist \
+DOCSEARCH_ADMIN_API_KEY=你的写入索引专用 Key \
+pnpm docsearch:index
+```
+
+- 注意：
+  - `DOCSEARCH_ADMIN_API_KEY` 只用于本地/CI 写索引，不能提交到仓库，不能放到前端环境变量里。
+  - 前端 `DOCSEARCH_API_KEY` 必须使用 `XXQ4GI90SC` 应用下的 Search-Only API Key，不能继续用旧应用 `U3RN7F5WI0` 的 key。
+  - 前端本地/部署构建环境变量示例：
+
+```bash
+DOCSEARCH_APP_ID=XXQ4GI90SC
+DOCSEARCH_INDEX_NAME=javaguide
+DOCSEARCH_API_KEY=3b514f...ef027b
+```
+
+- 上面的 `DOCSEARCH_API_KEY` 文档中只保留掩码；实际构建时使用完整 Search-Only API Key。
+- 2026-05-14 已用本地 `dist` 成功写入 `javaguide` 索引，索引 records 约 4.7 万条。
 
 ### GlobalUnlock
 

@@ -28,6 +28,7 @@
     "docs:build:clean": "rm -rf docs/.vuepress/.temp docs/.vuepress/.cache && pnpm docs:build",
     "docs:dev": "vuepress dev docs",
     "docs:clean-dev": "vuepress dev docs --clean-cache",
+    "docsearch:index": "node scripts/docsearch-index.mjs",
     "lint": "pnpm lint:prettier && pnpm lint:md",
     "lint:md": "markdownlint-cli2 '**/*.md'",
     "lint:prettier": "prettier --check --write .",
