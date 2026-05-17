@@ -32,6 +32,7 @@ head:
 
 - [应用层常见协议总结](./network/application-layer-protocol.md)
 - [HTTP vs HTTPS](./network/http-vs-https.md)
+- [HTTPS 握手里的 RSA 和 ECDHE，到底差在哪？](./network/https-rsa-vs-ecdhe.md)
 - [HTTP 1.0 vs HTTP 1.1](./network/http1.0-vs-http1.1.md)
 - [HTTP 常见状态码](./network/http-status-codes.md)
 - [DNS 域名系统详解](./network/dns.md)
@@ -39,7 +40,9 @@ head:
 **传输层**：
 
 - [TCP 三次握手和四次挥手](./network/tcp-connection-and-disconnection.md)
+- [TCP TIME_WAIT 详解](./network/tcp-time-wait.md)
 - [TCP 传输可靠性保障](./network/tcp-reliability-guarantee.md)
+- [为什么 TCP 是面向字节流，UDP 是面向报文？](./network/tcp-byte-stream-udp-datagram.md)
 
 **网络层**：
 

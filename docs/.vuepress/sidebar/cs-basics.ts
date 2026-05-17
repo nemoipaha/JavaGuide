@@ -41,6 +41,10 @@ export const csBasics = [
         children: [
           { text: "应用层常见协议总结", link: "application-layer-protocol" },
           { text: "⭐️HTTP vs HTTPS", link: "http-vs-https" },
+          {
+            text: "HTTPS 握手里的 RSA 和 ECDHE",
+            link: "https-rsa-vs-ecdhe",
+          },
           { text: "HTTP 1.0 vs HTTP 1.1", link: "http1.0-vs-http1.1" },
           { text: "HTTP 常见状态码总结", link: "http-status-codes" },
           { text: "DNS 域名系统详解", link: "dns" },
@@ -55,6 +59,10 @@ export const csBasics = [
             link: "tcp-connection-and-disconnection",
           },
           { text: "TCP TIME_WAIT 详解", link: "tcp-time-wait" },
+          {
+            text: "TCP 字节流 vs UDP 报文",
+            link: "tcp-byte-stream-udp-datagram",
+          },
           { text: "⭐️TCP 传输可靠性保障", link: "tcp-reliability-guarantee" },
         ],
       },
