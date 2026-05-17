@@ -22,7 +22,7 @@ export const csBasics = [
         ],
       },
       {
-        text: "重点",
+        text: "基础",
         icon: ICONS.STAR,
         children: [
           {
@@ -39,7 +39,7 @@ export const csBasics = [
         text: "应用层",
         icon: ICONS.CODE,
         children: [
-          { text: "应用层常见协议总结", link: "application-layer-protocol" },
+          { text: "⭐️应用层常见协议总结", link: "application-layer-protocol" },
           { text: "⭐️HTTP vs HTTPS", link: "http-vs-https" },
           {
             text: "HTTPS 握手里的 RSA 和 ECDHE",

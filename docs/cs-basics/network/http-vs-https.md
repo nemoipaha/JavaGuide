@@ -1,5 +1,5 @@
 ---
-title: HTTP vs HTTPS（应用层）
+title: HTTP vs HTTPS：区别在哪里、HTTPS 为什么更安全（应用层）
 description: 对比 HTTP 与 HTTPS 的协议与安全机制，解析 SSL/TLS 工作原理与握手流程，明确应用层安全落地细节。
 category: 计算机基础
 tag:
@@ -10,6 +10,17 @@ head:
       content: HTTP,HTTPS,SSL,TLS,加密,认证,端口,安全性,握手流程
 ---
 
+HTTP 能传输网页内容，但默认是明文传输。请求和响应如果在网络中被监听、篡改或冒充，HTTP 本身没有足够的保护能力。
+
+HTTPS 不是一个全新的应用层协议，而是在 HTTP 和 TCP 之间加入 TLS/SSL，用加密、身份认证和完整性校验来保护通信过程。
+
+这篇文章主要回答几个问题：
+
+1. HTTP 和 HTTPS 的核心区别是什么？
+2. HTTPS 如何防止窃听、篡改和冒充？
+3. SSL/TLS 握手大致做了哪些事情？
+4. 为什么使用 HTTPS 后，证书、混合内容和性能优化仍然需要关注？
+
 ## HTTP 协议
 
 ### HTTP 协议介绍
@@ -17,6 +28,8 @@ head:
 HTTP 协议，全称超文本传输协议（Hypertext Transfer Protocol）。顾名思义，HTTP 协议就是用来规范超文本的传输，超文本，也就是网络上的包括文本在内的各式各样的消息，具体来说，主要是来规范浏览器和服务器端的行为的。
 
 并且，HTTP 是一个无状态（stateless）协议，也就是说服务器不维护任何有关客户端过去所发请求的消息。这其实是一种懒政，有状态协议会更加复杂，需要维护状态（历史信息），而且如果客户或服务器失效，会产生状态的不一致，解决这种不一致的代价更高。
+
+![HTTP：超文本传输协议概览](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http-overview.png)
 
 ### HTTP 协议通信过程
 

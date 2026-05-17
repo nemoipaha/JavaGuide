@@ -1,5 +1,5 @@
 ---
-title: HTTP 1.0 vs HTTP 1.1（应用层）
+title: HTTP 1.0 vs HTTP 1.1：长连接、缓存、Host 头等核心差异（应用层）
 description: 细致对比 HTTP/1.0 与 HTTP/1.1 的协议差异，涵盖长连接、管道化、缓存与状态码增强等关键变更与实践影响。
 category: 计算机基础
 tag:
@@ -10,13 +10,20 @@ head:
       content: HTTP/1.0,HTTP/1.1,长连接,管道化,缓存,状态码,Host,带宽优化
 ---
 
-这篇文章会从下面几个维度来对比 HTTP 1.0 和 HTTP 1.1：
+HTTP/1.0 和 HTTP/1.1 名字只差一个小版本，但它们在连接复用、缓存、Host 头、状态码和带宽优化上都有明显差异。
 
-- 响应状态码
-- 缓存处理
-- 连接方式
-- Host 头处理
-- 带宽优化
+这些差异不是单纯的协议细节，它们直接影响浏览器如何发请求、服务器如何复用连接、缓存如何生效，以及虚拟主机如何工作。
+
+这篇文章主要回答几个问题：
+
+1. HTTP/1.1 相比 HTTP/1.0 新增了哪些常见状态码？
+2. HTTP/1.0 和 HTTP/1.1 的缓存机制有什么差异？
+3. HTTP/1.1 为什么默认支持长连接？
+4. Host 头和带宽优化分别解决了什么问题？
+
+开始之前，先简单回顾一下 HTTP 协议：
+
+![HTTP：超文本传输协议概览](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http-overview.png)
 
 ## 响应状态码
 

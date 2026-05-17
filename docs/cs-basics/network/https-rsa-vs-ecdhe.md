@@ -18,11 +18,18 @@ head:
 
 但严格说，HTTPS 从来不等于 RSA 加密。即使在 TLS 1.0、TLS 1.1 时代，RSA 也只是可选方案之一，协议里还存在 DHE 这类密钥交换方式。到了 TLS 1.3，静态 RSA 密钥交换已经被移除，RSA 更多出现在证书签名、身份认证这类位置。
 
-所以，这篇文章真正要对比的不是“RSA 和 ECDHE 谁更高级”，而是：
+所以，这篇文章真正要对比的不是“RSA 和 ECDHE 谁更高级”。
 
 **RSA 握手里，会话密钥材料是客户端生成后加密发给服务端；ECDHE 握手里，会话密钥材料不是直接传过去的，而是客户端和服务端各自算出来的。**
 
-这句话讲清楚了，`PreMasterSecret`、`Server Key Exchange`、前向安全、TLS 1.3 为什么移除静态 RSA，后面都能顺着理解。
+这篇文章主要回答几个问题：
+
+1. HTTPS 为什么不等于 RSA 加密？
+2. RSA 握手和 ECDHE 握手的会话密钥材料分别是怎么来的？
+3. ECDHE 为什么能提供前向安全性？
+4. TLS 1.3 为什么移除静态 RSA 密钥交换？
+
+把这些问题讲清楚了，`PreMasterSecret`、`Server Key Exchange`、前向安全、TLS 1.3 为什么移除静态 RSA，后面都能顺着理解。
 
 ![RSA 与 ECDHE 密钥交换：核心差异](https://oss.javaguide.cn/github/javaguide/cs-basics/network/https-rsa-ecdhe-rsa-and-ecdhe-key-exchange-core-differences.png)
 

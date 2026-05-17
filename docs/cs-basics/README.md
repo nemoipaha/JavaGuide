@@ -25,33 +25,33 @@ head:
 
 **重点**：
 
-- [OSI 和 TCP/IP 网络分层模型详解](./network/osi-and-tcp-ip-model.md)
-- [从输入 URL 到页面展示到底发生了什么？](./network/the-whole-process-of-accessing-web-pages.md)
+- [OSI 和 TCP/IP 网络分层模型详解（基础）](./network/osi-and-tcp-ip-model.md)
+- [访问网页的全过程（知识串联）](./network/the-whole-process-of-accessing-web-pages.md)
 
 **应用层**：
 
-- [应用层常见协议总结](./network/application-layer-protocol.md)
-- [HTTP vs HTTPS](./network/http-vs-https.md)
-- [HTTPS 握手里的 RSA 和 ECDHE，到底差在哪？](./network/https-rsa-vs-ecdhe.md)
-- [HTTP 1.0 vs HTTP 1.1](./network/http1.0-vs-http1.1.md)
-- [HTTP 常见状态码](./network/http-status-codes.md)
-- [DNS 域名系统详解](./network/dns.md)
+- [常见应用层协议总结：HTTP、WebSocket、SMTP、FTP、SSH、DNS 等](./network/application-layer-protocol.md)
+- [HTTP vs HTTPS：区别在哪里、HTTPS 为什么更安全（应用层）](./network/http-vs-https.md)
+- [HTTPS 握手里的 RSA 和 ECDHE，到底差在哪？（应用层）](./network/https-rsa-vs-ecdhe.md)
+- [HTTP 1.0 vs HTTP 1.1：长连接、缓存、Host 头等核心差异（应用层）](./network/http1.0-vs-http1.1.md)
+- [HTTP 常见状态码总结（应用层）](./network/http-status-codes.md)
+- [DNS 域名系统详解（应用层）](./network/dns.md)
 
 **传输层**：
 
-- [TCP 三次握手和四次挥手](./network/tcp-connection-and-disconnection.md)
-- [TCP TIME_WAIT 详解](./network/tcp-time-wait.md)
-- [TCP 传输可靠性保障](./network/tcp-reliability-guarantee.md)
-- [为什么 TCP 是面向字节流，UDP 是面向报文？](./network/tcp-byte-stream-udp-datagram.md)
+- [TCP 三次握手和四次挥手（传输层）](./network/tcp-connection-and-disconnection.md)
+- [TCP TIME_WAIT 详解：为什么要等、会不会出问题、能不能复用？](./network/tcp-time-wait.md)
+- [TCP 传输可靠性保障（传输层）](./network/tcp-reliability-guarantee.md)
+- [为什么 TCP 是面向字节流，UDP 是面向报文？（传输层）](./network/tcp-byte-stream-udp-datagram.md)
 
 **网络层**：
 
-- [ARP 协议详解](./network/arp.md)
-- [NAT 协议详解](./network/nat.md)
+- [ARP 协议详解（网络层）](./network/arp.md)
+- [NAT 协议详解（网络层）](./network/nat.md)
 
 **安全**：
 
-- [网络攻击常见手段总结](./network/network-attack-means.md)
+- [网络攻击常见手段总结（安全）](./network/network-attack-means.md)
 
 ## 操作系统
 

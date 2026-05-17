@@ -10,7 +10,16 @@ head:
       content: DNS,域名解析,递归查询,迭代查询,缓存,权威DNS,端口53,UDP
 ---
 
-DNS（Domain Name System）域名管理系统，是当用户使用浏览器访问网址之后，使用的第一个重要协议。DNS 要解决的是**域名和 IP 地址的映射问题**。
+在浏览器地址栏输入域名之后，真正发起 HTTP 请求之前，通常要先经过 DNS 解析。
+
+DNS 要解决的是**域名和 IP 地址的映射问题**。它看起来只是“把域名翻译成 IP”，但背后涉及本地缓存、递归查询、迭代查询、权威服务器、根服务器、UDP/TCP 切换等一整套机制。
+
+这篇文章主要回答几个问题：
+
+1. DNS 为什么需要分层设计？
+2. 一次完整的域名解析通常会经过哪些步骤？
+3. 递归查询和迭代查询有什么区别？
+4. DNS 为什么通常基于 UDP，什么情况下会改用 TCP？
 
 ![DNS:域名系统](https://oss.javaguide.cn/github/javaguide/cs-basics/network/dns-overview.png)
 
