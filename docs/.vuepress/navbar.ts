@@ -2,6 +2,7 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   { text: "后端面试", icon: "java", link: "/home.md" },
+  { text: "计算机基础", icon: "computer", link: "/cs-basics/" },
   { text: "AI面试", icon: "a-MachineLearning", link: "/ai/" },
   { text: "AI编程", icon: "code", link: "/ai-coding/" },
   {

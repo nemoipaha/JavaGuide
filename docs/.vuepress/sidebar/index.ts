@@ -4,6 +4,7 @@ import { aboutTheAuthor } from "./about-the-author.js";
 import { ai } from "./ai.js";
 import { aiCoding } from "./ai-coding.js";
 import { books } from "./books.js";
+import { csBasics } from "./cs-basics.js";
 import { highQualityTechnicalArticles } from "./high-quality-technical-articles.js";
 import { openSourceProject } from "./open-source-project.js";
 import { zhuanlan } from "./zhuanlan.js";
@@ -17,6 +18,7 @@ export default sidebar({
   // 应该把更精确的路径放置在前边
   "/ai-coding/": aiCoding,
   "/ai/": ai,
+  "/cs-basics/": csBasics,
   "/open-source-project/": openSourceProject,
   "/books/": books,
   "/about-the-author/": aboutTheAuthor,
@@ -168,81 +170,6 @@ export default sidebar({
             "java22-23",
             "java24",
             "java25",
-          ],
-        },
-      ],
-    },
-    {
-      text: "计算机基础",
-      icon: ICONS.COMPUTER,
-      prefix: "cs-basics/",
-      collapsible: true,
-      children: [
-        {
-          text: "网络",
-          prefix: "network/",
-          icon: ICONS.NETWORK,
-          children: [
-            "other-network-questions",
-            "other-network-questions2",
-            // "computer-network-xiexiren-summary",
-            createImportantSection([
-              "osi-and-tcp-ip-model",
-              "the-whole-process-of-accessing-web-pages",
-              "application-layer-protocol",
-              "http-vs-https",
-              "http1.0-vs-http1.1",
-              "http-status-codes",
-              "dns",
-              "tcp-connection-and-disconnection",
-              "tcp-reliability-guarantee",
-              "arp",
-              "nat",
-              "network-attack-means",
-            ]),
-          ],
-        },
-        {
-          text: "操作系统",
-          prefix: "operating-system/",
-          icon: ICONS.OS,
-          children: [
-            "operating-system-basic-questions-01",
-            "operating-system-basic-questions-02",
-            {
-              text: "Linux",
-              collapsible: true,
-              icon: ICONS.LINUX,
-              children: ["linux-intro", "shell-intro"],
-            },
-          ],
-        },
-        {
-          text: "数据结构",
-          prefix: "data-structure/",
-          icon: ICONS.DATA_STRUCTURE,
-          collapsible: true,
-          children: [
-            "linear-data-structure",
-            "tree",
-            "graph",
-            "heap",
-            "red-black-tree",
-            "bloom-filter",
-          ],
-        },
-        {
-          text: "算法",
-          prefix: "algorithms/",
-          icon: ICONS.ALGORITHM,
-          collapsible: true,
-          children: [
-            "classical-algorithm-problems-recommendations",
-            "common-data-structures-leetcode-recommendations",
-            "string-algorithm-problems",
-            "linkedlist-algorithm-problems",
-            "the-sword-refers-to-offer",
-            "10-classical-sorting-algorithms",
           ],
         },
       ],
