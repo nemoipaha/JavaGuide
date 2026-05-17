@@ -1,5 +1,5 @@
 ---
-title: 图
+title: 图详解（DFS、BFS、最短路径）
 description: 介绍图的基本概念与常用表示，结合 DFS/BFS 等核心算法与应用场景，掌握图论入门必备知识。
 category: 计算机基础
 tag:

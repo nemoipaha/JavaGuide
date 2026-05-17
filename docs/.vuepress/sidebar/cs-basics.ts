@@ -10,47 +10,68 @@ export const csBasics = [
         text: "面试题",
         icon: ICONS.INTERVIEW,
         children: [
-          "other-network-questions",
-          "other-network-questions2",
-          // "computer-network-xiexiren-summary",
+          {
+            text: "⭐️计算机网络常见面试题总结（上）",
+            link: "other-network-questions",
+          },
+          {
+            text: "⭐️计算机网络常见面试题总结（下）",
+            link: "other-network-questions2",
+          },
+          // { text: "计算机网络知识总结", link: "computer-network-xiexiren-summary" },
         ],
       },
       {
         text: "重点",
         icon: ICONS.STAR,
         children: [
-          "osi-and-tcp-ip-model",
-          "the-whole-process-of-accessing-web-pages",
+          {
+            text: "OSI 和 TCP/IP 网络分层模型详解",
+            link: "osi-and-tcp-ip-model",
+          },
+          {
+            text: "访问网页的全过程",
+            link: "the-whole-process-of-accessing-web-pages",
+          },
         ],
       },
       {
         text: "应用层",
         icon: ICONS.CODE,
         children: [
-          "application-layer-protocol",
-          "http-vs-https",
-          "http1.0-vs-http1.1",
-          "http-status-codes",
-          "dns",
+          { text: "应用层常见协议总结", link: "application-layer-protocol" },
+          { text: "⭐️HTTP vs HTTPS", link: "http-vs-https" },
+          { text: "HTTP 1.0 vs HTTP 1.1", link: "http1.0-vs-http1.1" },
+          { text: "HTTP 常见状态码总结", link: "http-status-codes" },
+          { text: "DNS 域名系统详解", link: "dns" },
         ],
       },
       {
         text: "传输层",
         icon: ICONS.NETWORK,
         children: [
-          "tcp-connection-and-disconnection",
-          "tcp-reliability-guarantee",
+          {
+            text: "⭐️TCP 三次握手和四次挥手",
+            link: "tcp-connection-and-disconnection",
+          },
+          { text: "TCP TIME_WAIT 详解", link: "tcp-time-wait" },
+          { text: "⭐️TCP 传输可靠性保障", link: "tcp-reliability-guarantee" },
         ],
       },
       {
         text: "网络层",
         icon: ICONS.NETWORK,
-        children: ["arp", "nat"],
+        children: [
+          { text: "ARP 协议详解", link: "arp" },
+          { text: "NAT 协议详解", link: "nat" },
+        ],
       },
       {
         text: "安全",
         icon: ICONS.SECURITY,
-        children: ["network-attack-means"],
+        children: [
+          { text: "网络攻击常见手段总结", link: "network-attack-means" },
+        ],
       },
     ],
   },
@@ -73,12 +94,12 @@ export const csBasics = [
     prefix: "data-structure/",
     icon: ICONS.DATA_STRUCTURE,
     children: [
-      "linear-data-structure",
-      "tree",
-      "graph",
-      "heap",
-      "red-black-tree",
-      "bloom-filter",
+      { text: "线性数据结构", link: "linear-data-structure" },
+      { text: "树结构", link: "tree" },
+      { text: "图", link: "graph" },
+      { text: "堆", link: "heap" },
+      { text: "红黑树", link: "red-black-tree" },
+      { text: "布隆过滤器", link: "bloom-filter" },
     ],
   },
   {

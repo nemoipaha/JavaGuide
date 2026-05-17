@@ -60,11 +60,12 @@ head:
 
 ## 数据结构
 
-- [线性数据结构：数组、链表、栈、队列](./data-structure/linear-data-structure.md)
-- [图](./data-structure/graph.md)
-- [堆](./data-structure/heap.md)
-- [树](./data-structure/tree.md)：重点关注[红黑树](./data-structure/red-black-tree.md)、B-，B+，B\*树、LSM 树
-- [布隆过滤器](./data-structure/bloom-filter.md)
+- [线性数据结构详解（数组、链表、栈、队列）](./data-structure/linear-data-structure.md)
+- [树结构详解（二叉树、AVL、B/B+树）](./data-structure/tree.md)
+- [图详解（DFS、BFS、最短路径）](./data-structure/graph.md)
+- [堆详解（最大堆、最小堆、优先队列）](./data-structure/heap.md)
+- [红黑树详解（性质、旋转、应用）](./data-structure/red-black-tree.md)
+- [布隆过滤器详解（原理、实现、应用场景）](./data-structure/bloom-filter.md)
 
 ## 算法
 

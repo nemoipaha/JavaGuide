@@ -1,5 +1,5 @@
 ---
-title: 布隆过滤器
+title: 布隆过滤器详解（原理、实现、应用场景）
 description: 解析 Bloom Filter 的原理与误判特性，结合哈希与位数组实现，适用于海量数据去重与缓存穿透防护。
 category: 计算机基础
 tag:

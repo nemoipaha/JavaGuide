@@ -281,6 +281,8 @@ sequenceDiagram
 
 ## TIME_WAIT 常见问题：为什么要等、会不会出问题、能不能复用？
 
+> 这部分内容已单独成文，详见 [TCP TIME_WAIT 详解：为什么要等、会不会出问题、能不能复用？](./tcp-time-wait.md)。
+
 上一节讲了为什么四次挥手最后要等 2MSL，这一节继续回答几个线上最常见的问题：大量 `TIME_WAIT` 会不会拖垮系统，为什么不建议随便开 `tcp_tw_reuse`，以及 `TIME_WAIT` 和 `CLOSE_WAIT` 到底怎么区分。
 
 ### TIME_WAIT 不只是“等一会儿再关”
