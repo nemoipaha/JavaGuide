@@ -2,7 +2,7 @@
 title: 性能测试入门
 description: 本文系统讲解性能测试核心知识，涵盖响应时间分位值（P90/P99/P999）、QPS/TPS、Little's Law 与曲棍球棒曲线、背压与自愈验证、性能测试分类（负载/压力/稳定性）、压测工具（JMeter/Gatling/ab）选型及性能优化策略。
 category: 高可用
-icon: et-performance
+icon: "mdi:speedometer"
 head:
   - - meta
     - name: keywords

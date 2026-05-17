@@ -2,7 +2,7 @@
 title: 超时&重试详解
 description: 本文系统讲解超时与重试机制核心知识，涵盖连接超时/读取超时设置原则、重试策略对比（固定间隔/指数退避/抖动退避）、重试风险（重试风暴/雪崩效应）及规避方法、幂等性设计、Java 重试框架（Spring Retry/Resilience4j）选型，助力微服务高可用设计与面试。
 category: 高可用
-icon: retry
+icon: "mdi:reload"
 head:
   - - meta
     - name: keywords

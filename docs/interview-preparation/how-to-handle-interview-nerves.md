@@ -2,7 +2,7 @@
 title: 面试太紧张怎么办？
 description: 面试太紧张影响发挥怎么办？从心态调整、提前准备到模拟面试与表达训练，提供一套可落地的方法，帮助你降低焦虑、提升临场表现，更稳定地通过技术面试。
 category: 面试准备
-icon: security-fill
+icon: "mdi:shield-lock-outline"
 head:
   - - meta
     - name: keywords

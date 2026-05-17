@@ -2,7 +2,7 @@
 title: 常见问题
 description: JavaGuide常见问题解答，涵盖PDF版本获取、RSS订阅、项目使用等用户高频咨询问题汇总。
 category: 走近项目
-icon: help
+icon: "mdi:help-circle-outline"
 ---
 
 ## JavaGuide 是否支持 RSS？

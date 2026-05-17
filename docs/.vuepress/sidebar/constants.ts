@@ -4,81 +4,81 @@
  */
 export const ICONS = {
   // 基础图标
-  STAR: "star",
-  BASIC: "basic",
-  CODE: "code",
-  DESIGN: "design",
+  STAR: "mdi:star-outline",
+  BASIC: "mdi:book-open-page-variant-outline",
+  CODE: "mdi:code-tags",
+  DESIGN: "mdi:palette-swatch-outline",
 
   // 技术领域
-  JAVA: "java",
-  COMPUTER: "computer",
-  DATABASE: "database",
-  NETWORK: "network",
+  JAVA: "mdi:language-java",
+  COMPUTER: "mdi:desktop-classic",
+  DATABASE: "mdi:database-outline",
+  NETWORK: "mdi:lan",
 
   // 框架和工具
-  SPRING_BOOT: "bxl-spring-boot",
-  MYBATIS: "mybatis",
-  NETTY: "netty",
+  SPRING_BOOT: "mdi:leaf",
+  MYBATIS: "mdi:database-cog-outline",
+  NETTY: "mdi:server-network-outline",
 
   // 数据库
-  MYSQL: "mysql",
-  REDIS: "redis",
-  ELASTICSEARCH: "elasticsearch",
-  MONGODB: "mongodb",
-  SQL: "SQL",
+  MYSQL: "mdi:database",
+  REDIS: "mdi:database-sync-outline",
+  ELASTICSEARCH: "mdi:database-search-outline",
+  MONGODB: "mdi:database-marker-outline",
+  SQL: "mdi:database-search",
 
   // 开发工具
-  TOOL: "tool",
-  MAVEN: "configuration",
-  GRADLE: "gradle",
-  GIT: "git",
-  DOCKER: "docker1",
-  IDEA: "intellijidea",
+  TOOL: "mdi:tools",
+  MAVEN: "mdi:package-variant-closed",
+  GRADLE: "mdi:cog-outline",
+  GIT: "mdi:git",
+  DOCKER: "mdi:docker",
+  IDEA: "mdi:application-brackets-outline",
 
   // 系统设计
-  COMPONENT: "component",
-  CONTAINER: "container",
-  SECURITY: "security-fill",
+  COMPONENT: "mdi:widgets-outline",
+  CONTAINER: "mdi:cube-outline",
+  SECURITY: "mdi:shield-lock-outline",
 
   // 分布式
-  DISTRIBUTED: "distributed-network",
-  GATEWAY: "gateway",
-  ID: "id",
-  LOCK: "lock",
-  TRANSACTION: "transanction",
-  RPC: "network",
-  FRAMEWORK: "framework",
+  DISTRIBUTED: "mdi:transit-connection-variant",
+  GATEWAY: "mdi:gate",
+  ID: "mdi:identifier",
+  LOCK: "mdi:lock-outline",
+  TRANSACTION: "mdi:bank-transfer",
+  RPC: "mdi:api",
+  FRAMEWORK: "mdi:layers-outline",
 
   // 高性能
-  PERFORMANCE: "et-performance",
-  CDN: "cdn",
-  LOAD_BALANCING: "fuzaijunheng",
-  MQ: "MQ",
+  PERFORMANCE: "mdi:speedometer",
+  CDN: "mdi:cloud-outline",
+  LOAD_BALANCING: "mdi:scale-balance",
+  MQ: "mdi:message-processing-outline",
 
   // 高可用
-  HIGH_AVAILABLE: "highavailable",
+  HIGH_AVAILABLE: "mdi:check-network-outline",
 
   // 操作系统
-  OS: "caozuoxitong",
-  LINUX: "linux",
-  VIRTUAL_MACHINE: "virtual_machine",
+  OS: "mdi:desktop-classic",
+  LINUX: "mdi:linux",
+  VIRTUAL_MACHINE: "mdi:server",
 
   // 数据结构与算法
-  DATA_STRUCTURE: "people-network-full",
-  ALGORITHM: "suanfaku",
+  DATA_STRUCTURE: "mdi:graph-outline",
+  ALGORITHM: "mdi:chart-tree",
 
   // 其他
-  FEATURED: "featured",
-  INTERVIEW: "interview",
-  EXPERIENCE: "experience",
-  CHAT: "chat",
-  BOOK: "book",
-  PROJECT: "project",
-  LIBRARY: "codelibrary-fill",
-  MACHINE_LEARNING: "a-MachineLearning",
-  BIG_DATA: "big-data",
-  SEARCH: "search",
-  WORK: "work",
+  FEATURED: "mdi:star-four-points-outline",
+  INTERVIEW: "mdi:briefcase-outline",
+  EXPERIENCE: "mdi:chart-timeline-variant",
+  CHAT: "mdi:comment-text-outline",
+  BOOK: "mdi:book-open-page-variant-outline",
+  PROJECT: "mdi:projector-screen-outline",
+  LIBRARY: "mdi:library-outline",
+  MACHINE_LEARNING: "mdi:robot-outline",
+  BIG_DATA: "mdi:database-search-outline",
+  SEARCH: "mdi:magnify",
+  WORK: "mdi:office-building-outline",
 } as const;
 
 /**

@@ -1,5 +1,5 @@
 ---
-icon: creative
+icon: "mdi:head-lightbulb-outline"
 title: JavaGuide（Java 面试 & 后端通用面试指南）
 description: Java 面试指南（Java 八股文/面试题总结）：覆盖 Java 基础、集合、并发、JVM、Spring、MySQL、Redis、系统设计与分布式等核心知识，适用于校招/社招后端面试复习。
 head:

@@ -2,7 +2,7 @@
 title: Java后端面试重点总结
 description: Java后端面试重点总结：梳理校招/社招高频考点与复习优先级，覆盖Java基础、集合、并发、MySQL、Redis、Spring/Spring Boot、JVM与项目经验准备，帮你抓重点高效备战。
 category: 面试准备
-icon: star
+icon: "mdi:star-outline"
 head:
   - - meta
     - name: keywords

@@ -2,7 +2,7 @@
 title: 项目经验指南
 description: 项目经验指南：针对没有项目/项目平淡的求职者，给出获取实战项目经验的方法与选择建议，并讲清如何做出项目亮点、如何复盘与表达，提升简历与面试竞争力。
 category: 面试准备
-icon: project
+icon: "mdi:projector-screen-outline"
 head:
   - - meta
     - name: keywords

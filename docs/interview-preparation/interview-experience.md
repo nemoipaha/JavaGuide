@@ -2,7 +2,7 @@
 title: 优质面经汇总(付费)
 description: 优质面经汇总：整理 30+ 篇高质量 Java 后端校招/社招面经与复盘，总结高频考点与面试策略，适合对照自测与查缺补漏。
 category: 知识星球
-icon: experience
+icon: "mdi:chart-timeline-variant"
 head:
   - - meta
     - name: keywords

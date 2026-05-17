@@ -2,7 +2,7 @@
 title: LLM 运行机制：Token、上下文窗口与采样参数怎么影响输出
 description: 从结构化输出不稳定、长上下文失忆和采样参数失控等真实问题出发，拆解 Token、上下文窗口、Temperature、Top-p、Top-k 与 Token 预算的工程影响。
 category: AI 应用开发
-icon: "ai"
+icon: "mdi:robot-outline"
 head:
   - - meta
     - name: keywords

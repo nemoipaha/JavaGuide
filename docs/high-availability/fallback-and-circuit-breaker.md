@@ -2,7 +2,7 @@
 title: 降级&熔断详解
 description: 服务降级与熔断机制详解，讲解降级策略、熔断器原理及 Hystrix、Sentinel、Resilience4j 等框架的应用实践，涵盖雪崩效应、熔断状态机、隔离策略与系统自适应保护。
 category: 高可用
-icon: circuit
+icon: "mdi:electric-switch"
 head:
   - - meta
     - name: keywords

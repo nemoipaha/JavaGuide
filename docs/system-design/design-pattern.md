@@ -2,7 +2,7 @@
 title: 设计模式常见面试题总结
 description: 设计模式(Design pattern)代表了最佳的实践，通常被有经验的面向对象 的软件开发人员所采用。设计模式是软件开发人员在软件开发过程中面临 的一般问题的解决方案。这些解决方案是众多软件开发人员经过相当⻓的 一段时间的试验和错误总结出来的。
 category: 系统设计
-icon: "Tools"
+icon: "mdi:tools"
 head:
   - - meta
     - name: keywords

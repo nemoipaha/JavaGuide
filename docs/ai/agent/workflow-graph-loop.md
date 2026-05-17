@@ -2,7 +2,7 @@
 title: AI 工作流中的 Workflow、Graph 与 Loop：从概念到实现
 description: 深度解析 AI 工作流中 Workflow、Graph、Loop 三大核心概念，对比传统工作流与 AI 工作流的差异，结合 Spring AI Alibaba 和 LangGraph 给出完整代码示例。
 category: AI 应用开发
-icon: “robot”
+icon: "mdi:robot-outline"
 head:
   - - meta
     - name: keywords

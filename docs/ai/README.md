@@ -1,7 +1,7 @@
 ---
 title: AI 应用开发面试指南
 description: 深入浅出掌握 AI 应用开发核心知识，涵盖大模型基础、Agent、RAG、MCP 协议、AI 编程实战等高频面试考点，适合校招/社招 AI 应用开发岗位面试复习。
-icon: "ai"
+icon: "mdi:robot-outline"
 head:
   - - meta
     - name: keywords

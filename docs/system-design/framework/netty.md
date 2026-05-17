@@ -2,7 +2,7 @@
 title: Netty常见面试题总结(付费)
 description: Netty高性能网络编程框架面试题详解，涵盖Reactor模型、事件循环、零拷贝、ChannelPipeline等核心原理。
 category: 框架
-icon: "network"
+icon: "mdi:lan"
 head:
   - - meta
     - name: keywords

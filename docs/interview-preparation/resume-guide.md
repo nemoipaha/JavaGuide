@@ -2,7 +2,7 @@
 title: 程序员简历编写指南
 description: 程序员简历编写指南：从筛选逻辑出发讲清简历结构、项目经历与技能描述写法，提供简历模板与避坑建议，帮助你提高简历通过率并让面试官更好地深挖你的亮点。
 category: 面试准备
-icon: jianli
+icon: "mdi:account-tie-outline"
 head:
   - - meta
     - name: keywords

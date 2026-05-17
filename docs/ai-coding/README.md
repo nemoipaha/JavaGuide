@@ -1,7 +1,7 @@
 ---
 title: AI 编程实战指南
 description: AI 编程实战与技巧分享，涵盖 Claude Code、Cursor、Codex 等主流 AI 编程工具的实战案例和使用技巧。
-icon: "code"
+icon: "mdi:code-tags"
 head:
   - - meta
     - name: keywords

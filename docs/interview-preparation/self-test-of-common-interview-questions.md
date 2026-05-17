@@ -2,7 +2,7 @@
 title: 常见面试题自测(付费)
 description: 常见面试题自测：按面试提问方式整理Java后端高频问题，提供提示与重要程度标注，适合面试前自测、定位短板、针对性复习。
 category: 知识星球
-icon: security-fill
+icon: "mdi:shield-lock-outline"
 head:
   - - meta
     - name: keywords

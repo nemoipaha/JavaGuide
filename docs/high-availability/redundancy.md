@@ -2,7 +2,7 @@
 title: 冗余设计详解
 description: 本文系统讲解冗余设计核心知识，涵盖冗余类型（硬件/软件/数据/服务冗余）、RTO/RPO 指标、高可用集群（主备/主主模式）、同城灾备、异地灾备、同城多活、异地多活架构对比及故障转移机制，助力高可用架构设计与面试。
 category: 高可用
-icon: cluster
+icon: "mdi:server-network-outline"
 head:
   - - meta
     - name: keywords

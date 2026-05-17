@@ -1,7 +1,7 @@
 ---
 title: Java 定时任务详解
 category: 系统设计
-icon: "time"
+icon: "mdi:clock-outline"
 description: 系统讲解 Java 定时任务与延时任务：Timer、ScheduledThreadPoolExecutor、DelayQueue、时间轮、Spring @Scheduled（Cron 表达式），以及 Quartz、XXL-JOB、ElasticJob、PowerJob 等分布式任务调度框架的选型对比与适用场景（订单超时取消/定时备份/定时抓取）。
 head:
   - - meta

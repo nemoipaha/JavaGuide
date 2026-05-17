@@ -2,7 +2,7 @@
 title: Web 实时消息推送详解
 description: 消息推送通常是指网站的运营工作等人员，通过某种工具对用户当前网页或移动设备 APP 进行的主动消息推送。
 category: 系统设计
-icon: "messages"
+icon: "mdi:message-text-outline"
 head:
   - - meta
     - name: keywords

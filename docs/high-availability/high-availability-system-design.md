@@ -2,7 +2,7 @@
 title: 高可用系统设计指南
 description: 本文系统讲解高可用系统设计的核心知识，涵盖可用性衡量标准（SLA/多少个9）、常见故障原因（硬件故障/代码缺陷/流量激增/网络攻击）、以及10+种提升系统可用性的方法（集群/限流/熔断/降级/缓存/异步/灰度发布等），助力高可用架构设计与面试。
 category: 高可用
-icon: design
+icon: "mdi:palette-swatch-outline"
 head:
   - - meta
     - name: keywords

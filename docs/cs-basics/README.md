@@ -1,7 +1,7 @@
 ---
 title: 计算机基础知识总结
 description: 计算机基础常见知识点&面试题总结，涵盖计算机网络、操作系统、数据结构与算法等核心知识。
-icon: "computer"
+icon: "mdi:desktop-classic"
 head:
   - - meta
     - name: keywords

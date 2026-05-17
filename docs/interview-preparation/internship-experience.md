@@ -2,7 +2,7 @@
 title: 校招没有实习经历怎么办？实习经历怎么写？
 description: 校招没有实习经历也能上岸：从补强项目经验、持续优化简历到系统准备技术面试，给出可执行的提升路径与注意事项，帮助你在没有大厂实习的情况下提高面试通过率。
 category: 面试准备
-icon: experience
+icon: "mdi:chart-timeline-variant"
 head:
   - - meta
     - name: keywords

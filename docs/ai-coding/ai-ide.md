@@ -2,7 +2,7 @@
 title: 10 道 AI 编程相关的开放性面试问题
 description: 涵盖 Cursor、Claude Code、Trae 等 AI 编程 IDE 使用技巧，Spec Coding 与 Vibe Coding 区别，以及 AI 对后端开发影响等高频面试问题。
 category: AI 应用开发
-icon: “code”
+icon: "mdi:code-tags"
 head:
   - - meta
     - name: keywords

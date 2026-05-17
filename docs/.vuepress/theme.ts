@@ -90,7 +90,7 @@ export default hopeTheme({
     },
 
     icon: {
-      assets: "//at.alicdn.com/t/c/font_2922463_o9q9dxmps9.css",
+      assets: "iconify",
     },
 
     photoSwipe: false,

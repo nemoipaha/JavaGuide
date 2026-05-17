@@ -2,7 +2,7 @@
 title: 项目介绍
 description: JavaGuide项目介绍，一个涵盖Java核心知识体系的学习与面试指南，助力Java开发者成长。
 category: 走近项目
-icon: about
+icon: "mdi:information-outline"
 ---
 
 我是 19 年大学毕业的，在大三准备面试的时候，我开源了 JavaGuide 。我把自己准备面试过程中的一些总结都毫不保留地通过 JavaGuide 分享了出来。
