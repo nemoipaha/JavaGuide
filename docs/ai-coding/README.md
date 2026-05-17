@@ -10,6 +10,19 @@ head:
 
 <!-- @include: @small-advertisement.snippet.md -->
 
+你好，我是 [JavaGuide](https://javaguide.cn/) 的作者 Guide。
+
+很多后端开发者用 AI 编程工具的第一感受是：哇，这玩意真的能写代码。用几天之后的感受是：怎么越来越不听话，改来改去反而越改越乱？
+
+AI 编程工具不是"把需求告诉 AI，等它出代码"这么简单。上下文怎么给、任务怎么拆、多模型怎么协同、出了幻觉怎么识别——这些工作方法不掌握，换再贵的模型也白搭。
+
+这个专栏记录的就是这些工具真正好用的姿势，包括 Claude Code、Cursor、Codex、Trae 等主流工具的**真实场景实战案例**和**具体使用技巧**。不是"5 分钟上手"类的入门介绍，而是跑过真实项目、踩过坑之后整理出来的东西。
+
+本专栏所属 AIGuide 项目（免费开源）：
+
+- **项目地址**：<https://github.com/Snailclimb/AIGuide>
+- **在线阅读**：<https://javaguide.cn/ai/>
+
 ## AI 编程实战
 
 光看概念不够，得亲手用过才知道边界在哪。这个系列都是真实场景的实战案例：
@@ -29,21 +42,3 @@ head:
 - [《OpenAI Codex 最佳实践指南》](./codex-best-practices.md)：综合官方文档与实战经验，系统梳理 Codex 云端智能体和 CLI 的提示工程、工具配置与安全策略
 - [《AI 编程选 CLI 还是 IDE？》](./cli-vs-ide.md)：深度对比 Claude Code、Cursor、Kiro、TRAE 等主流 AI 编程工具，解析 CLI 与 IDE 的核心差异与选型建议
 - [《AI 编程开放性面试题》](./ai-ide.md)：涵盖 Cursor、Claude Code 等 AI 编程 IDE 使用技巧，以及 AI 对后端开发影响等高频面试问题
-
-## 文章列表
-
-### AI 编程实战
-
-- [IDEA + Qoder 插件多场景实战：接口优化与代码重构](./idea-qoder-plugin.md) - 通过深分页优化、祖传代码重构两个真实案例，展示 AI 辅助编程的实战效果
-- [Trae + MiniMax 多场景实战：Redis 故障排查与跨语言重构](./trae-m2.7.md) - 使用 Trae IDE 接入 MiniMax 大模型，通过 Redis 故障排查和跨语言重构场景，分享 AI 辅助编程的实战经验
-- [Claude Code 接入第三方模型实战：JVM 智能诊断与慢查询治理](./cc-glm5.1.md) - 通过 Claude Code 接入 GLM-5.1，完成 JVM 智能诊断助手搭建和百万级数据量慢查询治理
-- [DeepSeek V4 + Claude Code 实战：代码能力深度测评](./deepseek-v4-claude-code.md) - 深入体验 DeepSeek V4 与 Claude Code 的集成，实测代码审计、Flyway 集成、多模型协同等场景
-
-### AI 编程技巧
-
-- [AI 编程必备 Skills 推荐：TDD、代码审查与网页自动化实战](./programmer-essential-skills.md) - 实战分享 6 个 AI 编程 Skills，覆盖 TDD 开发流程、代码审查、UI 设计、网页自动化与 Skill 开发
-- [Claude Code 核心命令详解：simplify、review、loop、batch](./claudecode-commands.md) - 深入解析 /simplify、/review、/loop、/batch 等核心命令的使用方法与实战技巧
-- [Claude Code 使用指南：配置、工作流与进阶技巧](./claudecode-tips.md) - 整理自 Anthropic 官方技术文档并融合实战经验，系统梳理 Claude Code 的使用技巧
-- [OpenAI Codex 最佳实践指南：提示工程、工具配置与安全策略](./codex-best-practices.md) - 综合官方文档与实战经验，系统梳理 Codex 的最佳实践
-- [AI 编程选 CLI 还是 IDE？一文帮你彻底搞清楚](./cli-vs-ide.md) - 深度对比 Claude Code、Cursor、Kiro、TRAE 等主流 AI 编程工具，解析 CLI 与 IDE 的核心差异与选型建议
-- [AI 编程开放性面试题：10 道高频问题解答](./ai-ide.md) - 涵盖 Cursor、Claude Code 等 AI 编程 IDE 使用技巧，以及 AI 对后端开发影响等高频面试问题

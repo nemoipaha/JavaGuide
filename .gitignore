@@ -17,8 +17,8 @@ format-markdown.py
 package-lock.json
 lintmd-config.json
 .claude/settings.local.json
-<<<<<<< Updated upstream
-=======
 /.obsidian
 docs/ai/claude.md
->>>>>>> Stashed changes
+scripts/docsearch-index.mjs
+PERFORMANCE_NOTES.md
+docs/cs-basics/network/TODO.md
