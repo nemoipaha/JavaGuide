@@ -20,13 +20,13 @@ head:
 
 **面试题**：
 
-- [计算机网络常见知识点&面试题总结(上)](./network/other-network-questions.md)
-- [计算机网络常见知识点&面试题总结(下)](./network/other-network-questions2.md)
+- [计算机网络常见面试题总结(上)](./network/other-network-questions.md)
+- [计算机网络常见面试题总结(下)](./network/other-network-questions2.md)
 
 **重点**：
 
-- [OSI 和 TCP/IP 网络分层模型详解（基础）](./network/osi-and-tcp-ip-model.md)
-- [访问网页的全过程（知识串联）](./network/the-whole-process-of-accessing-web-pages.md)
+- [OSI 七层模型与 TCP/IP 四层模型详解](./network/osi-and-tcp-ip-model.md)
+- [从输入 URL 到页面展示到底发生了什么？](./network/the-whole-process-of-accessing-web-pages.md)
 
 **应用层**：
 
@@ -46,7 +46,7 @@ head:
 
 **网络层**：
 
-- [ARP 协议详解（网络层）](./network/arp.md)
+- [ARP 协议详解(网络层)](./network/arp.md)
 - [NAT 协议详解（网络层）](./network/nat.md)
 
 **安全**：
@@ -55,10 +55,10 @@ head:
 
 ## 操作系统
 
-- [操作系统常见知识点&面试题总结(上)](./operating-system/operating-system-basic-questions-01.md)
-- [操作系统常见知识点&面试题总结(下)](./operating-system/operating-system-basic-questions-02.md)
+- [操作系统常见面试题总结(上)](./operating-system/operating-system-basic-questions-01.md)
+- [操作系统常见面试题总结(下)](./operating-system/operating-system-basic-questions-02.md)
 - **Linux**：
-  - [后端程序员必备的 Linux 基础知识总结](./operating-system/linux-intro.md)
+  - [Linux 基础知识总结](./operating-system/linux-intro.md)
   - [Shell 编程基础知识总结](./operating-system/shell-intro.md)
 
 ## 数据结构
@@ -74,9 +74,9 @@ head:
 
 **常见算法问题总结**：
 
-- [经典算法题推荐](./algorithms/classical-algorithm-problems-recommendations.md)
-- [常见数据结构对应的 LeetCode 题目推荐](./algorithms/common-data-structures-leetcode-recommendations.md)
-- [几道常见的字符串算法题总结](./algorithms/string-algorithm-problems.md)
-- [几道常见的链表算法题总结](./algorithms/linkedlist-algorithm-problems.md)
-- [剑指 offer 部分编程题](./algorithms/the-sword-refers-to-offer.md)
-- [十大经典排序算法](./algorithms/10-classical-sorting-algorithms.md)
+- [经典算法思想总结（含LeetCode题目推荐）](./algorithms/classical-algorithm-problems-recommendations.md)
+- [常见数据结构经典LeetCode题目推荐](./algorithms/common-data-structures-leetcode-recommendations.md)
+- [几道常见的字符串算法题](./algorithms/string-algorithm-problems.md)
+- [几道常见的链表算法题](./algorithms/linkedlist-algorithm-problems.md)
+- [剑指offer部分编程题](./algorithms/the-sword-refers-to-offer.md)
+- [十大经典排序算法总结](./algorithms/10-classical-sorting-algorithms.md)

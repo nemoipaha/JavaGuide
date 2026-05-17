@@ -26,11 +26,11 @@ export const csBasics = [
         icon: ICONS.STAR,
         children: [
           {
-            text: "OSI 和 TCP/IP 网络分层模型详解",
+            text: "OSI 七层模型与 TCP/IP 四层模型详解",
             link: "osi-and-tcp-ip-model",
           },
           {
-            text: "访问网页的全过程",
+            text: "从输入 URL 到页面展示到底发生了什么？",
             link: "the-whole-process-of-accessing-web-pages",
           },
         ],
